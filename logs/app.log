@@ -1,0 +1,105 @@
+[2020-08-15T08:34:31.588499+00:00] slim-app.INFO: User is created {"user_id":4} {"uid":"48f553e"}
+[2020-08-15T08:46:51.607068+00:00] slim-app.INFO: User updated {"id":1} {"uid":"40dec4d"}
+[2020-08-15T08:47:03.592092+00:00] slim-app.INFO: User list [] {"uid":"218801f"}
+[2020-08-15T09:29:01.216904+00:00] slim-app.INFO: Delete User {"id":"1"} {"uid":"c874f64"}
+[2020-08-15T09:29:41.613248+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"5774ca5"}
+[2020-08-15T16:44:39.984906+00:00] slim-app.INFO: User list [] {"uid":"d677307"}
+[2020-08-15T17:00:39.276882+00:00] slim-app.INFO: User list [] {"uid":"0dec8d9"}
+[2020-08-15T17:00:39.943945+00:00] slim-app.INFO: User list [] {"uid":"b6e3603"}
+[2020-08-15T17:07:02.684185+00:00] slim-app.INFO: User is created {"user_id":5} {"uid":"e39b5fa"}
+[2020-08-15T17:20:01.329007+00:00] slim-app.INFO: User is created {"user_id":6} {"uid":"a699feb"}
+[2020-08-15T17:20:03.617515+00:00] slim-app.INFO: User is created {"user_id":7} {"uid":"1804a0b"}
+[2020-08-15T17:30:37.052665+00:00] slim-app.INFO: User list [] {"uid":"7b33924"}
+[2020-08-15T17:32:07.952486+00:00] slim-app.INFO: Find user  [] {"uid":"be1aad2"}
+[2020-08-15T17:34:12.657169+00:00] slim-app.INFO: Find user  [] {"uid":"1805ebe"}
+[2020-08-15T17:34:34.042950+00:00] slim-app.INFO: Find user  [{"id":"6","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"}] {"uid":"b75c420"}
+[2020-08-15T17:48:22.924286+00:00] slim-app.INFO: User list [] {"uid":"9b26c4c"}
+[2020-08-15T18:00:57.927315+00:00] slim-app.INFO: User list [] {"uid":"0bfb792"}
+[2020-08-15T18:01:24.696710+00:00] slim-app.INFO: User list [] {"uid":"2ca342c"}
+[2020-08-16T02:22:32.288673+00:00] slim-app.INFO: User list [] {"uid":"6a9a35d"}
+[2020-08-16T03:12:47.769018+00:00] slim-app.INFO: User list [] {"uid":"aea166c"}
+[2020-08-16T03:13:32.447657+00:00] slim-app.INFO: User list [] {"uid":"abaa36e"}
+[2020-08-16T03:14:54.308105+00:00] slim-app.INFO: User list [] {"uid":"5718e8d"}
+[2020-08-16T03:15:35.175055+00:00] slim-app.INFO: User list [] {"uid":"1c8aa43"}
+[2020-08-16T04:43:55.824043+00:00] slim-app.INFO: User list [] {"uid":"2e020ea"}
+[2020-08-16T04:54:10.401208+00:00] slim-app.INFO: Find user  [{"id":"7","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"}] {"uid":"50e21fd"}
+[2020-08-16T04:55:55.729060+00:00] slim-app.INFO: Find user  [{"id":"7","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"}] {"uid":"6ae4dda"}
+[2020-08-16T04:56:00.992079+00:00] slim-app.INFO: Find user  [{"id":"3","username":"ádasd","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"}] {"uid":"1ee94a5"}
+[2020-08-16T04:56:05.382662+00:00] slim-app.INFO: Find user  [] {"uid":"513eb10"}
+[2020-08-16T04:59:02.645409+00:00] slim-app.INFO: Find user  {"id":"3","username":"ádasd","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"} {"uid":"f541ade"}
+[2020-08-16T05:16:20.782833+00:00] slim-app.INFO: Find user  {"id":"7","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"} {"uid":"3fda908"}
+[2020-08-16T05:17:19.801873+00:00] slim-app.INFO: Find user  {"id":"7","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"} {"uid":"61d2b59"}
+[2020-08-16T05:21:53.485632+00:00] slim-app.INFO: Find user  {"id":"7","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"} {"uid":"f78f351"}
+[2020-08-16T05:22:18.663867+00:00] slim-app.INFO: Find user  {"id":"7","username":"","first_name":"Mai","last_name":"Binh","email":"aasa@gmail.com"} {"uid":"d6bf55d"}
+[2020-08-16T05:25:33.205815+00:00] slim-app.INFO: User is created {"user_id":8} {"uid":"3a12fbc"}
+[2020-08-16T05:25:56.329443+00:00] slim-app.INFO: User is created {"user_id":9} {"uid":"022a6b0"}
+[2020-08-16T05:25:59.085100+00:00] slim-app.INFO: User is created {"user_id":10} {"uid":"9ec57de"}
+[2020-08-16T05:34:49.809791+00:00] slim-app.INFO: Delete User {"id":"7"} {"uid":"c933c25"}
+[2020-08-16T05:34:57.335999+00:00] slim-app.INFO: Delete User {"id":"21"} {"uid":"6947f35"}
+[2020-08-16T05:34:58.985906+00:00] slim-app.INFO: Delete User {"id":"21"} {"uid":"8a7ebbf"}
+[2020-08-16T05:48:23.936198+00:00] slim-app.INFO: Delete User {"id":"1"} {"uid":"32ef155"}
+[2020-08-16T05:48:27.876809+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"3ab25cb"}
+[2020-08-16T05:49:06.201711+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"ad2aeef"}
+[2020-08-16T05:50:08.876319+00:00] slim-app.INFO: User updated {"id":6} {"uid":"3b445f7"}
+[2020-08-16T05:50:58.011746+00:00] slim-app.INFO: User updated {"id":8} {"uid":"96d7265"}
+[2020-08-16T05:58:40.535736+00:00] slim-app.WARNING: User update not found [] {"uid":"1d1534d"}
+[2020-08-16T06:00:23.598663+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"f8afbca"}
+[2020-08-16T06:00:24.354353+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"5cce5d5"}
+[2020-08-16T06:00:24.972758+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"0f9e796"}
+[2020-08-16T06:00:25.405257+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"a5f7d46"}
+[2020-08-16T06:01:06.271295+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"21906e0"}
+[2020-08-16T06:01:13.024273+00:00] slim-app.WARNING: User not found [] {"uid":"774d632"}
+[2020-08-16T06:11:31.717579+00:00] slim-app.INFO: User list [] {"uid":"7eb4f23"}
+[2020-08-16T06:18:04.163954+00:00] slim-app.INFO: Delete User {"id":"2"} {"uid":"8f36fcc"}
+[2020-08-16T06:18:19.698676+00:00] slim-app.WARNING: User update not found [] {"uid":"dc61ce3"}
+[2020-08-16T06:20:26.274280+00:00] slim-app.WARNING: User update not found [] {"uid":"b23232e"}
+[2020-08-16T06:20:31.308858+00:00] slim-app.INFO: User updated {"id":3} {"uid":"79add43"}
+[2020-08-16T06:20:35.626392+00:00] slim-app.INFO: User updated {"id":3} {"uid":"ed4b9e2"}
+[2020-08-16T06:21:38.662820+00:00] slim-app.INFO: User is created {"user_id":11} {"uid":"73be8de"}
+[2020-08-16T06:22:40.931419+00:00] slim-app.INFO: User is created {"user_id":12} {"uid":"ba0dc56"}
+[2020-08-16T06:38:22.936267+00:00] slim-app.INFO: User is created {"user_id":13} {"uid":"2eb3e28"}
+[2020-08-16T06:38:48.529570+00:00] slim-app.INFO: User is created {"user_id":14} {"uid":"6ae1463"}
+[2020-08-16T06:39:37.304446+00:00] slim-app.INFO: User is created {"user_id":15} {"uid":"7c62736"}
+[2020-08-16T06:40:06.740037+00:00] slim-app.INFO: User is created {"user_id":16} {"uid":"4c2deb9"}
+[2020-08-16T06:41:07.585625+00:00] slim-app.INFO: User is created {"user_id":17} {"uid":"87a8f3a"}
+[2020-08-16T06:41:24.763156+00:00] slim-app.INFO: User is created {"user_id":18} {"uid":"ec10675"}
+[2020-08-16T06:42:01.659970+00:00] slim-app.INFO: User is created {"user_id":19} {"uid":"6c99644"}
+[2020-08-16T06:47:41.792841+00:00] slim-app.INFO: User is created {"user_id":20} {"uid":"186f6a2"}
+[2020-08-16T06:53:00.031754+00:00] slim-app.INFO: User is created {"user_id":21} {"uid":"bc49837"}
+[2020-08-16T06:57:15.685716+00:00] slim-app.INFO: User list [] {"uid":"483a79a"}
+[2020-08-16T07:04:00.489200+00:00] slim-app.INFO: User is created {"user_id":22} {"uid":"9c3c1ce"}
+[2020-08-16T07:05:57.724178+00:00] slim-app.INFO: User is created {"user_id":23} {"uid":"c6c81ec"}
+[2020-08-16T07:08:56.460470+00:00] slim-app.INFO: User is created {"user_id":24} {"uid":"cde28d1"}
+[2020-08-16T07:10:02.490607+00:00] slim-app.INFO: User is created {"user_id":25} {"uid":"144422d"}
+[2020-08-16T07:11:30.208390+00:00] slim-app.INFO: User is created {"user_id":26} {"uid":"e612688"}
+[2020-08-16T07:11:44.913636+00:00] slim-app.INFO: User is created {"user_id":27} {"uid":"f9beece"}
+[2020-08-16T07:13:12.870126+00:00] slim-app.INFO: User is created {"user_id":28} {"uid":"0a33d6a"}
+[2020-08-16T07:13:21.374213+00:00] slim-app.INFO: User is created {"user_id":29} {"uid":"2554e0b"}
+[2020-08-16T07:15:10.076808+00:00] slim-app.INFO: User is created {"user_id":30} {"uid":"e78941e"}
+[2020-08-16T07:17:41.358585+00:00] slim-app.INFO: User is created {"user_id":31} {"uid":"252461f"}
+[2020-08-16T07:23:10.822649+00:00] slim-app.INFO: User is created {"user_id":32} {"uid":"a6ff40f"}
+[2020-08-16T07:23:26.993275+00:00] slim-app.INFO: User is created {"user_id":33} {"uid":"0ab3ac6"}
+[2020-08-16T07:24:04.319630+00:00] slim-app.INFO: User is created {"user_id":34} {"uid":"05dac03"}
+[2020-08-16T07:28:33.229710+00:00] slim-app.INFO: User is created {"user_id":35} {"uid":"72f931e"}
+[2020-08-16T07:28:58.777656+00:00] slim-app.INFO: User is created {"user_id":36} {"uid":"685c7c2"}
+[2020-08-16T07:30:34.371265+00:00] slim-app.INFO: User is created {"user_id":37} {"uid":"5616bab"}
+[2020-08-16T07:30:41.395840+00:00] slim-app.INFO: User is created {"user_id":38} {"uid":"9c2bb9e"}
+[2020-08-16T07:31:06.445890+00:00] slim-app.INFO: User is created {"user_id":39} {"uid":"6b1b5fa"}
+[2020-08-16T07:31:20.866178+00:00] slim-app.INFO: User is created {"user_id":40} {"uid":"152f22a"}
+[2020-08-16T07:31:48.322282+00:00] slim-app.INFO: User is created {"user_id":41} {"uid":"f85d398"}
+[2020-08-16T07:41:54.346593+00:00] slim-app.INFO: User is created {"user_id":42} {"uid":"1605385"}
+[2020-08-16T07:43:32.473181+00:00] slim-app.INFO: User is created {"user_id":43} {"uid":"a85d825"}
+[2020-08-16T07:45:53.556433+00:00] slim-app.INFO: User is created {"user_id":44} {"uid":"ec7977c"}
+[2020-08-16T07:47:44.371003+00:00] slim-app.INFO: User is created {"user_id":45} {"uid":"1ef7f6d"}
+[2020-08-16T07:48:24.907861+00:00] slim-app.INFO: User is created {"user_id":46} {"uid":"978908e"}
+[2020-08-16T08:14:45.109325+00:00] slim-app.INFO: User is created {"user_id":47} {"uid":"4777e30"}
+[2020-08-16T08:15:58.416516+00:00] slim-app.INFO: User is created {"user_id":48} {"uid":"9906288"}
+[2020-08-16T10:53:24.753814+00:00] slim-app.INFO: User is created {"user_id":49} {"uid":"b3f56d8"}
+[2020-08-16T10:53:52.423703+00:00] slim-app.INFO: User is created {"user_id":50} {"uid":"6bacdf8"}
+[2020-08-16T10:54:06.871622+00:00] slim-app.INFO: User is created {"user_id":51} {"uid":"5aba7cd"}
+[2020-08-16T10:55:25.306508+00:00] slim-app.INFO: User is created {"user_id":52} {"uid":"2d6a81f"}
+[2020-08-16T10:57:53.898079+00:00] slim-app.INFO: User is created {"user_id":53} {"uid":"26e2c03"}
+[2020-08-16T10:58:27.459131+00:00] slim-app.INFO: User is created {"user_id":54} {"uid":"08eaca2"}
+[2020-08-16T11:00:16.884740+00:00] slim-app.INFO: User is created {"user_id":55} {"uid":"a710790"}
+[2020-08-16T11:00:35.576389+00:00] slim-app.INFO: User is created {"user_id":56} {"uid":"f0a86d8"}
+[2020-08-16T11:03:53.311157+00:00] slim-app.INFO: User is created {"user_id":57} {"uid":"d5044c8"}
