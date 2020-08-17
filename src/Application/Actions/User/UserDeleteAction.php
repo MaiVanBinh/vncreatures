@@ -18,6 +18,7 @@ class UserDeleteAction extends UserAction{
             } else {
                 throw new Exception('User Not Found');
             }
+            
             $id = $this->userServices->deleteUserById($id);
             $result = ['id' => $id];
             

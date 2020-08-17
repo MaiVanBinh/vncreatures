@@ -19,7 +19,7 @@ class SpeciesRepository {
     /**
      * List all species
      * 
-     * 
+     * @return Species list species
      */
     public function listSpecies(){
         try {

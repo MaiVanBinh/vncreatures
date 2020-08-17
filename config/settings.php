@@ -13,7 +13,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'driver' => 'mysql',
                 'host' => 'localhost:3308',
                 'username' => 'root',
-                'database' => 'db_php',
+                'database' => 'vncreatures',
                 'password' => '',
                 'charset' => 'utf8',
                 'collation' => 'utf8_unicode_ci',

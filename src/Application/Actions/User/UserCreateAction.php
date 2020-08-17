@@ -35,7 +35,7 @@ final class UserCreateAction extends UserAction
             if(!$filename) {
                 throw new Exception('Upload image error');
             }
-            unlink( __DIR__ . '/../../../../assets/images/6121s.jpg');
+            
             $data['image'] = $filename;
 
             // Invoke the Domain with inputs and retain the result

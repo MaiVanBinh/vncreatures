@@ -9,7 +9,7 @@ use Slim\Psr7\Response;
 use Slim\Exception\HttpBadRequestException;
 use Exception;
 
-abstract class Action {
+abstract class Actions {
     /**
      * @var LoggerInterface
      */
