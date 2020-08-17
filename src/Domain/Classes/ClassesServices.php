@@ -2,7 +2,6 @@
 namespace App\Domain\Classes;
 
 use App\Domain\Classes\ClassesRepository;
-use SebastianBergmann\Timer\Duration;
 
 class ClassesServices {
     /**
@@ -21,8 +20,8 @@ class ClassesServices {
         $this->repository = $repository;
     }
 
-    public function getClassesBySpecies($id) {
-        $classes = $this->repository->classesListBySpecies($id);
+    public function getClassesBySpecies($loaiId) {
+        $classes = $this->repository->classesListBySpecies($loaiId);
         return $classes;
     }
 }

@@ -114,3 +114,13 @@
 [2020-08-17T16:36:35.641879+00:00] slim-app.INFO: Find classes by Species id {"id":"2"} {"uid":"bdcb12b"}
 [2020-08-17T16:36:41.502834+00:00] slim-app.INFO: Find classes by Species id {"id":"3"} {"uid":"f702919"}
 [2020-08-17T16:36:45.935709+00:00] slim-app.INFO: Find classes by Species id {"id":"4"} {"uid":"e7b2933"}
+[2020-08-17T17:37:09.775464+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"c3fd0fe"}
+[2020-08-17T17:37:28.696090+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"086ee7a"}
+[2020-08-17T17:37:30.903895+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"523c79e"}
+[2020-08-17T17:37:31.591691+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"beed509"}
+[2020-08-17T17:37:41.700025+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"e348c18"}
+[2020-08-17T17:37:49.103959+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"be6a4ce"}
+[2020-08-17T17:38:15.246234+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"b87e52e"}
+[2020-08-17T17:38:16.275040+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"85a1f5d"}
+[2020-08-17T17:38:21.279019+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"32ae5c2"}
+[2020-08-17T17:39:25.992574+00:00] slim-app.INFO: Find classes by Species id {"loaiId":"2"} {"uid":"0159215"}

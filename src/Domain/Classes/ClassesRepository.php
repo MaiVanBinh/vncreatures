@@ -22,13 +22,13 @@ class ClassesRepository {
     }
 
     /**
-     * @param int id The id of Species
+     * @param int loaiId The loaiId of Species
      * @return array classes The name of classes list
      */
-    public function classesListBySpecies($id) {
-        $sql = 'SELECT * FROM nhom where Loai=:id';
+    public function classesListBySpecies($loaiId) {
+        $sql = 'SELECT * FROM nhom where Loai=:loaiId';
         $db = $this->connection->prepare($sql);
-        $db->execute(['id' => $id]);
+        $db->execute(['loaiId' => $loaiId]);
         $classes = $db->fetchAll();
         return $classes;
     }

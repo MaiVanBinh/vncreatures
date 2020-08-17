@@ -31,7 +31,7 @@ return function(App $app) {
     });
 
     $app->group('/classes', function(Group $group) {
-        $group->get('/{id}', ClassesListAction::class);
+        $group->get('', ClassesListAction::class);
     });
     
     $app->group('/bo', function(Group $group) {
