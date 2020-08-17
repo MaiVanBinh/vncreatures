@@ -12,6 +12,7 @@ use App\Application\Actions\User\UserDeleteAction;
 use App\Application\Actions\User\FindUserByIdAction;
 use App\Application\Actions\Species\SpeciesListAction;
 use App\Application\Actions\Classes\ClassesListAction;
+use App\Application\Actions\Bo\BoListAction;
 
 return function(App $app) {
 
@@ -31,6 +32,10 @@ return function(App $app) {
 
     $app->group('/classes', function(Group $group) {
         $group->get('/{id}', ClassesListAction::class);
+    });
+    
+    $app->group('/bo', function(Group $group) {
+        $group->get('', BoListAction::class);
     });
 
     $app->get('/fileimg', function ($request, $response){
