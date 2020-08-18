@@ -124,3 +124,5 @@
 [2020-08-17T17:38:16.275040+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"85a1f5d"}
 [2020-08-17T17:38:21.279019+00:00] slim-app.INFO: Find classes by Species id {"loaiId":null} {"uid":"32ae5c2"}
 [2020-08-17T17:39:25.992574+00:00] slim-app.INFO: Find classes by Species id {"loaiId":"2"} {"uid":"0159215"}
+[2020-08-18T14:48:55.394900+00:00] slim-app.INFO: Find Ho {"boId":null} {"uid":"610e345"}
+[2020-08-18T14:49:09.827887+00:00] slim-app.INFO: Find Ho {"boId":"2004"} {"uid":"dd9e469"}

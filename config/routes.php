@@ -13,7 +13,7 @@ use App\Application\Actions\User\FindUserByIdAction;
 use App\Application\Actions\Species\SpeciesListAction;
 use App\Application\Actions\Classes\ClassesListAction;
 use App\Application\Actions\Bo\BoListAction;
-
+use App\Application\Actions\Ho\HoListAction;
 return function(App $app) {
 
     $app->get('/', HomeAction::class)->setName('home');
@@ -36,6 +36,10 @@ return function(App $app) {
     
     $app->group('/bo', function(Group $group) {
         $group->get('', BoListAction::class);
+    });
+
+    $app->group('/ho', function(Group $group) {
+        $group->get('', HoListAction::class);
     });
 
     $app->get('/fileimg', function ($request, $response){
