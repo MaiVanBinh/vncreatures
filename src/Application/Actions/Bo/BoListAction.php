@@ -2,11 +2,10 @@
 
 namespace App\Application\Actions\Bo;
 
-use App\Application\Actions\Bo\BoAction;
-use Error;
+use App\Application\Actions\Bo\BoActions;
 use Exception;
 
-class BoListAction extends BoAction {
+class BoListAction extends BoActions {
     public function action() {
         try{
             $query = $this->request->getQueryParams();
@@ -18,7 +17,7 @@ class BoListAction extends BoAction {
             $bo['length'] = count($bo);
             return $this->respondWithData($bo);
         } catch(Exception $e) {
-            throw new Error("Bo list error");
+            throw new Exception("Bo list error");
         }
         
     }

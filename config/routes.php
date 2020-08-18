@@ -14,6 +14,7 @@ use App\Application\Actions\Species\SpeciesListAction;
 use App\Application\Actions\Classes\ClassesListAction;
 use App\Application\Actions\Bo\BoListAction;
 use App\Application\Actions\Ho\HoListAction;
+use App\Application\Actions\Creatures\CreaturesListAction;
 return function(App $app) {
 
     $app->get('/', HomeAction::class)->setName('home');
@@ -42,6 +43,10 @@ return function(App $app) {
         $group->get('', HoListAction::class);
     });
 
+    $app->group('/creatures', function(Group $group) {
+        $group->get('', CreaturesListAction::class);
+    });
+    
     $app->get('/fileimg', function ($request, $response){
         $file = __DIR__  . "/uploads/back.jpg";
         if (!file_exists($file)) {

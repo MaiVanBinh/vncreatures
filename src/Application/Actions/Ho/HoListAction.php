@@ -14,6 +14,7 @@ class HoListAction extends HoAction {
                 $boId = $query['boId'];
             }
             $ho = $this->services->listBo($boId);
+            $ho['length'] = count($ho);
             $this->logger->info('Find Ho', ['boId' => $boId]);
             return $this->respondWithData($ho);
         } catch(Exception $e) {
