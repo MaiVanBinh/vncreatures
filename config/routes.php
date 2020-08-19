@@ -15,7 +15,12 @@ use App\Application\Actions\Classes\ClassesListAction;
 use App\Application\Actions\Bo\BoListAction;
 use App\Application\Actions\Ho\HoListAction;
 use App\Application\Actions\Creatures\CreaturesListAction;
+// use Slim\Exception\HttpNotFoundException;
+
 return function(App $app) {
+    $app->options('/{routes:.+}', function ($request, $response, $args) {
+        return $response;
+    });
 
     $app->get('/', HomeAction::class)->setName('home');
 
@@ -59,4 +64,11 @@ return function(App $app) {
         $response->getBody()->write($image);
         return $response->withHeader('Content-Type', 'image/png');
     });
+    /**
+     * Catch-all route to serve a 404 Not Found page if none of the routes match
+     * NOTE: make sure this route is defined last
+     */
+    // $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+    //     throw new HttpNotFoundException($request);
+    // });
 };

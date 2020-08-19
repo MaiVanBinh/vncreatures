@@ -14,6 +14,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'host' => 'localhost:3308',
                 'username' => 'root',
                 'database' => 'vncreatures',
+                // 'database' => 'db_php',
                 'password' => '',
                 'charset' => 'utf8',
                 'collation' => 'utf8_unicode_ci',
@@ -36,6 +37,5 @@ return function (ContainerBuilder $containerBuilder) {
                 'level' => Logger::DEBUG,
             ],
         ],
-        
     ]);
 };

@@ -25,8 +25,6 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 $callableResolver = $app->getCallableResolver();
 
-$app->addBodyParsingMiddleware();
-
 // add middleware
 $middleware = require __DIR__ . ('/../config/middleware.php');
 $middleware($app);
