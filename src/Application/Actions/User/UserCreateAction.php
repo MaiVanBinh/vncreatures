@@ -5,8 +5,8 @@ namespace App\Application\Actions\User;
 use Slim\Exception\HttpBadRequestException;
 use App\Application\Actions\User\UserAction;
 use Psr\Http\Message\UploadedFileInterface;
-use Psr\Container\ContainerInterface;
-
+use App\Exception\ValidationException;
+use Slim\Exception\RequestBodyValidationError;
 use Exception;
 
 final class UserCreateAction extends UserAction
@@ -19,6 +19,12 @@ final class UserCreateAction extends UserAction
             // Collect input from the HTTP request
             $data = (array) $this->request->getParsedBody();
             
+            // validate error
+            $errors = (string) $this->validateNewUser($data);
+
+            if($errors !== '') {
+                throw new RequestBodyValidationError($this->request, $errors);
+            }
             //upload file
             $directory = __DIR__ . '/../../../../assets/images';
 
@@ -50,7 +56,7 @@ final class UserCreateAction extends UserAction
             // Create and return response
             return $this->respondWithData($result, 201);
         } catch(Exception $e) {
-            throw new HttpBadRequestException($this->request, $e->getMessage());
+            throw $e;
         }
     }
 
@@ -60,5 +66,33 @@ final class UserCreateAction extends UserAction
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
         return $filename;
+    }
+
+    /**
+     * Input validation.
+     *
+     * @param array $data The form data
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    private function validateNewUser(array $data)
+    {
+        $errors = '';
+
+        // Here you can also use your preferred validation library
+
+        if (empty($data['username'])) {
+            $errors .= "username input required.\n";
+        }
+
+        if (empty($data['email'])) {
+            $errors .= "email input required.\n";
+        } elseif (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false) {
+            $errors .= "Invalid email address.\n";
+        }
+
+        return $errors;
     }
 }

@@ -131,3 +131,6 @@
 [2020-08-19T14:40:13.342978+00:00] slim-app.INFO: Find Ho {"boId":null} {"uid":"8d3a357"}
 [2020-08-19T15:01:22.916783+00:00] slim-app.INFO: List Species [] {"uid":"1765399"}
 [2020-08-19T15:02:20.964559+00:00] slim-app.INFO: List Species [] {"uid":"980a42d"}
+[2020-08-19T17:32:12.677379+00:00] slim-app.INFO: User is created {"user_id":60} {"uid":"40aa960"}
+[2020-08-19T17:34:05.900542+00:00] slim-app.INFO: User is created {"user_id":61} {"uid":"a52d705"}
+[2020-08-19T17:34:10.558210+00:00] slim-app.INFO: User is created {"user_id":62} {"uid":"07258a3"}

@@ -17,5 +17,10 @@ class CreaturesServices {
         $creatures = $this->repository->getCreaturesByFilter($filter);
         return $creatures;
     }
+
+    public function getCreatureById($id) {
+        $creatures = $this->repository->FindCreaturesById($id);
+        return $creatures;
+    }
 }
 

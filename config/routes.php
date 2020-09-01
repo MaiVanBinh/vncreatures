@@ -15,6 +15,7 @@ use App\Application\Actions\Classes\ClassesListAction;
 use App\Application\Actions\Bo\BoListAction;
 use App\Application\Actions\Ho\HoListAction;
 use App\Application\Actions\Creatures\CreaturesListAction;
+use App\Application\Actions\Creatures\CreaturesFindByIdAction;
 // use Slim\Exception\HttpNotFoundException;
 
 return function(App $app) {
@@ -49,11 +50,14 @@ return function(App $app) {
     });
 
     $app->group('/creatures', function(Group $group) {
+        $group->get('/{id}', CreaturesFindByIdAction::class);
         $group->get('', CreaturesListAction::class);
+        
     });
     
-    $app->get('/fileimg', function ($request, $response){
-        $file = __DIR__  . "/uploads/back.jpg";
+    $app->get('/fileimg/{imageName}', function ($request, $response, $args){
+        $imageName = $args["imageName"];
+        $file = __DIR__  . "/../assets/images/" . $imageName . ".jpg";
         if (!file_exists($file)) {
             die("file:$file");
         }
@@ -63,6 +67,18 @@ return function(App $app) {
         }
         $response->getBody()->write($image);
         return $response->withHeader('Content-Type', 'image/png');
+    });
+    $app->get('/intro', function ($request, $response){
+        $file = __DIR__  . "/../assets/intro.html";
+        if (!file_exists($file)) {
+            die("file:$file");
+        }
+        $image = file_get_contents($file);
+        if ($image === false) {
+            die("error getting image");
+        }
+        $response->getBody()->write($image);
+        return $response->withHeader('Content-Type', 'text/html');
     });
     /**
      * Catch-all route to serve a 404 Not Found page if none of the routes match

@@ -3,7 +3,7 @@
 namespace App\Domain\Creatures;
 
 use App\Domain\Creatures;
-
+use Exception;
 use PDO;
 
 class CreaturesRepository {
@@ -54,5 +54,22 @@ class CreaturesRepository {
         $db->execute($filterUpdate);
         $creatures = $db->fetchAll();
         return $creatures;
+    }
+
+    /**
+     * @param int id The id of creatures
+     * 
+     * @return array The information of creatures
+     */
+    public function FindCreaturesById($id) {
+        $sql = "SELECT * FROM creatures WHERE id = $id";
+
+        $db = $this->connection->prepare($sql);
+        $db->execute(['id' => $id]);
+        $creatures = $db->fetchAll();
+        if(count($creatures) < 0) {
+            throw new Exception("Creatures not found");
+        }
+        return $creatures[0];
     }
 }

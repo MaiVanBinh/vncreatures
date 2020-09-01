@@ -5,7 +5,6 @@ namespace App\Application\Handlers;
 
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
-use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpException;
@@ -14,6 +13,7 @@ use Slim\Exception\HttpMethodNotAllowedException;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpNotImplementedException;
 use Slim\Exception\HttpUnauthorizedException;
+use Slim\Exception\RequestBodyValidationError;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
 use Throwable;
 
@@ -47,6 +47,8 @@ class HttpErrorHandler extends SlimErrorHandler
                 $error->setType(ActionError::BAD_REQUEST);
             } elseif ($exception instanceof HttpNotImplementedException) {
                 $error->setType(ActionError::NOT_IMPLEMENTED);
+            } elseif($exception instanceof RequestBodyValidationError) {
+                $error->setType(ActionError::REQUEST_BODY_VALIDATION_ERROR);
             }
         }
 

@@ -35,7 +35,7 @@ final class UserServices
     public function createUser(array $data): int
     {
         // Input validation
-        // $this->validateNewUser($data);
+        $this->validateNewUser($data);
 
         // Insert user
         $userId = $this->repository->insertUser($data);
