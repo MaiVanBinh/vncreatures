@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Bo;
+namespace App\Domain\Order;
 use PDO;
 
-class BoRepository {
+class OrderRepository {
     private $connection;
 
     public function __construct(PDO $connection)
@@ -13,11 +13,11 @@ class BoRepository {
     /**
      * @param int id La id cua Nhom, Neu khong co se fetch tat ca
      */
-    public function listBo($nhomId = null) {
-        $sql = !$nhomId ? 'SELECT * FROM bo' : 'SELECT * FROM bo WHERE Nhom=:nhomId';
+    public function fetchOrder() {
+        $sql = 'SELECT * FROM vncreatures.orders order by name_vn asc';
         $db = $this->connection->prepare($sql);
-        $db->execute(['nhomId' => $nhomId]);
-        $bo = $db->fetchAll();
-        return $bo;
+        $db->execute();
+        $order = $db->fetchAll();
+        return $order;
     }
 }

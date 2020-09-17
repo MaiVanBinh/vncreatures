@@ -11,7 +11,7 @@ return function (ContainerBuilder $containerBuilder) {
             'displayErrorDetails' => true, // Should be set to false in production
             'db' => [
                 'driver' => 'mysql',
-                'host' => 'localhost:3308',
+                'host' => 'localhost:3306',
                 'username' => 'root',
                 'database' => 'vncreatures',
                 // 'database' => 'db_php',

@@ -134,3 +134,26 @@
 [2020-08-19T17:32:12.677379+00:00] slim-app.INFO: User is created {"user_id":60} {"uid":"40aa960"}
 [2020-08-19T17:34:05.900542+00:00] slim-app.INFO: User is created {"user_id":61} {"uid":"a52d705"}
 [2020-08-19T17:34:10.558210+00:00] slim-app.INFO: User is created {"user_id":62} {"uid":"07258a3"}
+[2020-09-09T16:52:58.010180+00:00] slim-app.WARNING: Classes list by Species id error [] {"uid":"be8085b"}
+[2020-09-09T16:54:35.463590+00:00] slim-app.WARNING: Classes list by Species id error [] {"uid":"aa96335"}
+[2020-09-09T17:02:41.371536+00:00] slim-app.WARNING: Classes list by Species id error [] {"uid":"8a89c04"}
+[2020-09-09T17:04:02.280594+00:00] slim-app.INFO: Find classes [] {"uid":"7fc0cce"}
+[2020-09-10T07:33:14.271298+00:00] slim-app.INFO: Find classes [] {"uid":"c59a23f"}
+[2020-09-10T07:33:27.971222+00:00] slim-app.INFO: Find classes [] {"uid":"f0506b7"}
+[2020-09-10T07:33:31.384901+00:00] slim-app.INFO: Find classes [] {"uid":"5492743"}
+[2020-09-10T07:34:02.359577+00:00] slim-app.INFO: Find classes [] {"uid":"5634b01"}
+[2020-09-10T07:34:47.337881+00:00] slim-app.INFO: Find classes [] {"uid":"651722f"}
+[2020-09-10T07:35:13.918064+00:00] slim-app.INFO: Find classes [] {"uid":"9dd8e30"}
+[2020-09-10T07:37:12.272235+00:00] slim-app.INFO: Find classes [] {"uid":"9c51f5f"}
+[2020-09-10T07:39:42.869611+00:00] slim-app.INFO: Find classes [] {"uid":"09a197f"}
+[2020-09-10T07:40:50.009797+00:00] slim-app.INFO: Find classes [] {"uid":"76b8834"}
+[2020-09-10T07:40:54.303905+00:00] slim-app.INFO: Find classes [] {"uid":"ea48886"}
+[2020-09-10T07:41:02.376878+00:00] slim-app.INFO: Find classes [] {"uid":"6855206"}
+[2020-09-10T07:41:09.948007+00:00] slim-app.INFO: Find classes [] {"uid":"d508680"}
+[2020-09-10T07:41:54.179523+00:00] slim-app.INFO: Find classes [] {"uid":"92911eb"}
+[2020-09-10T07:42:05.398480+00:00] slim-app.INFO: Find classes [] {"uid":"1b24c57"}
+[2020-09-10T07:59:22.197634+00:00] slim-app.INFO: Find Groups [] {"uid":"ba439a0"}
+[2020-09-10T08:49:42.183429+00:00] slim-app.WARNING: User update not found [] {"uid":"bb10603"}
+[2020-09-10T08:54:53.164768+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"a46b585"}
+[2020-09-10T08:55:10.201225+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"d396d88"}
+[2020-09-11T05:14:38.858444+00:00] slim-app.INFO: List Species [] {"uid":"a50ee6e"}

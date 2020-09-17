@@ -10,8 +10,9 @@ class CreaturesFindByIdAction extends CreaturesActions {
     public function action() {
         try{
             $id = $this->resolveArg('id');
-            $creatures = $this->services->getCreatureById($id);
-            // $creatures = ['id' => $id];
+            $creatures = $this->creaturesServices->getCreatureById($id);
+            $images = $this->assetsServices->fetchCreatureImage($id);
+            $creatures['images'] = $images;
             return $this->respondWithData($creatures);
         } catch(Exception $e) {
             throw new HttpNotFoundException($this->request,$e->getMessage());

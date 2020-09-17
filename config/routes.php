@@ -11,12 +11,17 @@ use App\Application\Actions\User\UserUpdateAction;
 use App\Application\Actions\User\UserDeleteAction;
 use App\Application\Actions\User\FindUserByIdAction;
 use App\Application\Actions\Species\SpeciesListAction;
-use App\Application\Actions\Classes\ClassesListAction;
+use App\Application\Actions\Groups\GroupsListAction;
 use App\Application\Actions\Bo\BoListAction;
 use App\Application\Actions\Ho\HoListAction;
-use App\Application\Actions\Creatures\CreaturesListAction;
+use App\Application\Actions\Creatures\CreaturesListByFilterAction;
 use App\Application\Actions\Creatures\CreaturesFindByIdAction;
-// use Slim\Exception\HttpNotFoundException;
+use App\Application\Actions\Groups\FetchGroups;
+use App\Application\Actions\Conbine\FetchFilterDataActioncs;
+use App\Application\Actions\Posts\PostsFetchPostById;
+use App\Application\Actions\Posts\FetchPosts;
+use App\Application\Actions\Posts\FetchPostIdentify;
+use App\Application\Actions\Posts\FetchPost;
 
 return function(App $app) {
     $app->options('/{routes:.+}', function ($request, $response, $args) {
@@ -37,8 +42,9 @@ return function(App $app) {
         $group->get('', SpeciesListAction::class);
     });
 
-    $app->group('/classes', function(Group $group) {
-        $group->get('', ClassesListAction::class);
+    $app->group('/groups', function(Group $group) {
+        // $group->get('', GroupsListAction::class);
+        $group->get('', FetchGroups::class);
     });
     
     $app->group('/bo', function(Group $group) {
@@ -51,10 +57,16 @@ return function(App $app) {
 
     $app->group('/creatures', function(Group $group) {
         $group->get('/{id}', CreaturesFindByIdAction::class);
-        $group->get('', CreaturesListAction::class);
+        $group->get('', CreaturesListByFilterAction::class);
         
     });
     
+    $app->group('/posts', function(Group $group) {
+        $group->get('', FetchPosts::class);
+        $group->get('/idetify', FetchPostIdentify::class);
+        $group->get('/{id}', PostsFetchPostById::class);
+    });
+
     $app->get('/fileimg/{imageName}', function ($request, $response, $args){
         $imageName = $args["imageName"];
         $file = __DIR__  . "/../assets/images/" . $imageName . ".jpg";
@@ -68,18 +80,9 @@ return function(App $app) {
         $response->getBody()->write($image);
         return $response->withHeader('Content-Type', 'image/png');
     });
-    $app->get('/intro', function ($request, $response){
-        $file = __DIR__  . "/../assets/intro.html";
-        if (!file_exists($file)) {
-            die("file:$file");
-        }
-        $image = file_get_contents($file);
-        if ($image === false) {
-            die("error getting image");
-        }
-        $response->getBody()->write($image);
-        return $response->withHeader('Content-Type', 'text/html');
-    });
+
+    $app->get('/filterData', FetchFilterDataActioncs::class);
+
     /**
      * Catch-all route to serve a 404 Not Found page if none of the routes match
      * NOTE: make sure this route is defined last

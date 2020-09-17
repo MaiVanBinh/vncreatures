@@ -13,11 +13,11 @@ class SpeciesService {
     }
 
     /**
-     * List Species services
+     * fetch Species services
      * @return Array Species
      */
-    public function listSpecies() {
-        $species = $this->repository->listSpecies();
+    public function fetchSpecies() {
+        $species = $this->repository->fetchSpecies();
         return $species;
     }
 }

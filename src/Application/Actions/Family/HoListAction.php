@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Actions\Ho;
+namespace App\Application\Actions\Family;
 
 use App\Application\Actions\Ho\HoAction;
 use Exception;
 
-class HoListAction extends HoAction {
+class FamilyListAction extends FamilyAction {
     public function action() {
         try{
             $query = $this->request->getQueryParams();

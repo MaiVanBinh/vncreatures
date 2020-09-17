@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Ho;
+namespace App\Domain\Family;
 
 use PDO;
 
-class HoRepository {
+class FamilyRepository {
     /**
      * @var connection
      */
@@ -23,12 +23,12 @@ class HoRepository {
     /**
      * @param int id La id cua Ho, Neu khong co se fetch tat ca
      */
-    public function listHo($boId = null) {
-        $sql = !$boId ? 'SELECT * FROM ho' : 'SELECT * FROM ho WHERE Bo=:boId';
+    public function fetchFamily() {
+        $sql = 'SELECT * FROM family order by name_vn asc';
         $db = $this->connection->prepare($sql);
-        $db->execute(['boId' => $boId]);
-        $ho = $db->fetchAll();
-        return $ho;
+        $db->execute();
+        $family = $db->fetchAll();
+        return $family;
     }
 }
 

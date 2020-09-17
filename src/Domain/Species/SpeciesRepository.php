@@ -21,13 +21,13 @@ class SpeciesRepository {
      * 
      * @return Species list species
      */
-    public function listSpecies(){
+    public function fetchSpecies(){
         try {
-            $sql = 'SELECT * FROM loai';
+            $sql = 'SELECT * FROM species';
             $db = $this->connection->prepare($sql);
             $db->execute();
-            $loai = $db->fetchAll();
-            return $loai;
+            $species = $db->fetchAll();
+            return $species;
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
         }
