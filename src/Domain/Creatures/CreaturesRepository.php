@@ -23,8 +23,8 @@ class CreaturesRepository
         $sqlSelectPath = [];
         $sqlCountPath = [];
         $name = '';
-        array_push($sqlSelectPath, "SELECT c.id, c.name_vn, c.name_latin, g.name_vn as group_vn, f.name_vn as family_vn, o.name_vn as order_vn,c.img, s.name_en as species
-        from (SELECT creatures.id, creatures.name_vn, creatures.name_latin, creatures.group, creatures.family, creatures.order, creatures.species, creatures.img FROM creatures WHERE name_vn !='vodanh'");
+        array_push($sqlSelectPath, "SELECT c.id, c.name_vn, c.name_latin, g.name_vn as group_vn, f.name_vn as family_vn, o.name_vn as order_vn, c.avatar, s.name_en as species
+        from (SELECT creatures.id, creatures.name_vn, creatures.name_latin, creatures.group, creatures.family, creatures.order, creatures.species, creatures.avatar FROM creatures WHERE name_vn !='vodanh'");
         array_push($sqlCountPath, "SELECT count(id) as total from creatures WHERE name_vn!='vodanh'");
 
         if (array_key_exists('family', $filter) && count(json_decode($filter['family'])) > 0) {
@@ -80,8 +80,7 @@ class CreaturesRepository
             g.name_vn as group_vn, 
             f.name_vn as family_vn, 
             o.name_vn as order_vn,
-            s.name_en as species,
-            AuthorName as author
+            s.name_en as species
         from 
             (select * from vncreatures.creatures c where c.id =:id) c, 
             vncreatures.group g, 
@@ -97,5 +96,21 @@ class CreaturesRepository
             throw new Exception("Creatures not found");
         }
         return $creatures[0];
+    }
+
+    public function fetchCreatureRedBook($filter)
+    {
+        $sql = "SELECT id, name_vn, name_latin, redbook_level FROM creatures where redbook_level is not null ";
+        if (array_key_exists('species', $filter) && $filter['species']) {
+            $sql .= "AND species={$filter['species']} ";
+        }
+        if (!array_key_exists('all', $filter)) {
+            $sql .= " LIMIT 10;";
+        }
+        $sql .= " ORDER BY name_vn asc";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $creatures = $db->fetchAll();
+        return $creatures;
     }
 }

@@ -5,23 +5,31 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 use App\Application\Actions\HomeAction;
+
 use App\Application\Actions\User\UserCreateAction;
 use App\Application\Actions\User\UserListAction;
 use App\Application\Actions\User\UserUpdateAction;
 use App\Application\Actions\User\UserDeleteAction;
 use App\Application\Actions\User\FindUserByIdAction;
-use App\Application\Actions\Species\SpeciesListAction;
-use App\Application\Actions\Groups\GroupsListAction;
+
+use App\Application\Actions\Species\FetchSpeciesAction;
+
 use App\Application\Actions\Bo\BoListAction;
 use App\Application\Actions\Ho\HoListAction;
+
 use App\Application\Actions\Creatures\CreaturesListByFilterAction;
 use App\Application\Actions\Creatures\CreaturesFindByIdAction;
+use App\Application\Actions\Creatures\CreaturesRedBook;
+
 use App\Application\Actions\Groups\FetchGroups;
+
 use App\Application\Actions\Conbine\FetchFilterDataActioncs;
+
 use App\Application\Actions\Posts\PostsFetchPostById;
 use App\Application\Actions\Posts\FetchPosts;
 use App\Application\Actions\Posts\FetchPostIdentify;
-use App\Application\Actions\Posts\FetchPost;
+
+use App\Application\Actions\Category\FetchCategory;
 
 return function(App $app) {
     $app->options('/{routes:.+}', function ($request, $response, $args) {
@@ -39,7 +47,7 @@ return function(App $app) {
     });
     
     $app->group('/species', function(Group $group) {
-        $group->get('', SpeciesListAction::class);
+        $group->get('', FetchSpeciesAction::class);
     });
 
     $app->group('/groups', function(Group $group) {
@@ -56,6 +64,7 @@ return function(App $app) {
     });
 
     $app->group('/creatures', function(Group $group) {
+        $group->get('/red-book', CreaturesRedBook::class);
         $group->get('/{id}', CreaturesFindByIdAction::class);
         $group->get('', CreaturesListByFilterAction::class);
         
@@ -83,6 +92,9 @@ return function(App $app) {
 
     $app->get('/filterData', FetchFilterDataActioncs::class);
 
+    $app->group('/category', function(Group $group) {
+        $group->get('', FetchCategory::class);
+    });
     /**
      * Catch-all route to serve a 404 Not Found page if none of the routes match
      * NOTE: make sure this route is defined last
