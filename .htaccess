@@ -1,3 +1,9 @@
-RewriteEngine on
-RewriteRule ^$ public/ [L]
-RewriteRule (.*) public/$1 [L]
+<IfModule mime_module>
+    RewriteEngine on
+    RewriteBase /
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+  AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
+  Header set Access-Control-Allow-Origin "*"
+  RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>

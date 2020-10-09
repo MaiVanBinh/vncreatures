@@ -17,7 +17,7 @@ class PostsRepository
     public function fetchPostById($id)
     {
         try {
-            $sql = "SELECT title, content FROM vncreatures.posts WHERE id=:postId;";
+            $sql = "SELECT title, content FROM vncreatu_vncreature_new.posts WHERE id=:postId;";
             $db = $this->connection->prepare($sql);
             $db->execute(['postId' => $id]);
             $post = $db->fetchAll();
@@ -75,7 +75,7 @@ class PostsRepository
 
     public function fetchPostIndentify()
     {
-        $sql = "SELECT id, title, category FROM vncreatures.posts where category like 'identify%';";
+        $sql = "SELECT id, title, category FROM vncreatu_vncreature_new.posts where category in (3,4,5);";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $posts = $db->fetchAll();

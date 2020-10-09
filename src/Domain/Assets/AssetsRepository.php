@@ -12,8 +12,8 @@ class AssetsRepository {
     public function fetchCreatureImage($creatureId) {
         $sql = "SELECT 
             a.id, a.url 
-        FROM vncreatures.assets a, 
-            (SELECT asset FROM vncreatures.assets_creatures where creature=:creatureId) ac 
+        FROM vncreatu_vncreature_new.assets a, 
+            (SELECT asset FROM vncreatu_vncreature_new.assets_creatures where creature=:creatureId) ac 
         where a.id = ac.asset;";
         $db = $this->connection->prepare($sql);
         $db->execute(['creatureId' => $creatureId]);

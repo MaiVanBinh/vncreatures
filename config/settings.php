@@ -11,10 +11,9 @@ return function (ContainerBuilder $containerBuilder) {
             'displayErrorDetails' => true, // Should be set to false in production
             'db' => [
                 'driver' => 'mysql',
-                'host' => 'localhost:3306',
+                'host' => 'localhost',
                 'username' => 'root',
-                'database' => 'vncreatures',
-                // 'database' => 'db_php',
+                'database' => 'vncreatu_vncreature_new',
                 'password' => '',
                 'charset' => 'utf8',
                 'collation' => 'utf8_unicode_ci',

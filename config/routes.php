@@ -6,12 +6,6 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 use App\Application\Actions\HomeAction;
 
-use App\Application\Actions\User\UserCreateAction;
-use App\Application\Actions\User\UserListAction;
-use App\Application\Actions\User\UserUpdateAction;
-use App\Application\Actions\User\UserDeleteAction;
-use App\Application\Actions\User\FindUserByIdAction;
-
 use App\Application\Actions\Species\FetchSpeciesAction;
 
 use App\Application\Actions\Bo\BoListAction;
@@ -31,20 +25,21 @@ use App\Application\Actions\Posts\FetchPostIdentify;
 
 use App\Application\Actions\Category\FetchCategory;
 
+use App\Application\Actions\NationalParks\FetchNationalParkById;
+use App\Application\Actions\NationalParks\FetchNationParks;
+
+use App\Application\Actions\Author\FetchAuthors;
+
+use App\Application\Actions\LatinDic\SearchLatinDic;
+use Slim\Exception\HttpNotFoundException;
+
 return function(App $app) {
+    
     $app->options('/{routes:.+}', function ($request, $response, $args) {
         return $response;
     });
 
     $app->get('/', HomeAction::class)->setName('home');
-
-    $app->group('/users', function(Group $group) {
-        $group->post('', UserCreateAction::class);
-        $group->get('', UserListAction::class);
-        $group->put('/{id}', UserUpdateAction::class);
-        $group->delete('/{id}', UserDeleteAction::class);
-        $group->get('/{id}', FindUserByIdAction::class);
-    });
     
     $app->group('/species', function(Group $group) {
         $group->get('', FetchSpeciesAction::class);
@@ -67,7 +62,6 @@ return function(App $app) {
         $group->get('/red-book', CreaturesRedBook::class);
         $group->get('/{id}', CreaturesFindByIdAction::class);
         $group->get('', CreaturesListByFilterAction::class);
-        
     });
     
     $app->group('/posts', function(Group $group) {
@@ -95,11 +89,29 @@ return function(App $app) {
     $app->group('/category', function(Group $group) {
         $group->get('', FetchCategory::class);
     });
-    /**
-     * Catch-all route to serve a 404 Not Found page if none of the routes match
-     * NOTE: make sure this route is defined last
-     */
-    // $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-    //     throw new HttpNotFoundException($request);
-    // });
+    $app->group('/national-parks', function(Group $group) {
+        $group->get('', FetchNationParks::class);
+        $group->get('/{id}', FetchNationalParkById::class);
+    });
+
+    $app->group('/author', function(Group $group) {
+        $group->get('', FetchAuthors::class);
+    });
+
+    $app->group('/latin-dic', function(Group $group) {
+        $group->get('', SearchLatinDic::class);
+    });
+
+    $app->group('/users', function(Group $group) {
+        $group->post('/login', \App\Application\Actions\User\Login::class);
+        $group->post('/sign-up', \App\Application\Actions\User\Register::class);
+    });
+
+    $app->group('/auth/users', function(Group $group) {
+        $group->get('/{id}', \App\Application\Actions\User\FetchUserById::class);
+    });
+
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
+        throw new HttpNotFoundException($request);
+    });
 };

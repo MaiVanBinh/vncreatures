@@ -33,13 +33,13 @@ class PostsServices
         $insect = [];
         for ($i = 1; $i < count($post); $i++) {
             switch ($post[$i]['category']) {
-                case 'identify_animal':
+                case '3':
                     array_push($animal, $post[$i]);
                     break;
-                case 'identify_plant':
+                case '4':
                     array_push($plant, $post[$i]);
                     break;
-                case 'identify_insect':
+                case '5':
                     array_push($insect, $post[$i]);
                     break;
             }

@@ -17,16 +17,43 @@ class CreaturesRepository
     /**
      * @param array Filter include id cua loai, nhom, bo va ho
      */
+
+
+
+
     public function getCreaturesByFilter($filter)
     {
         define('NUMBER_PER_PAGE', 9);
         $sqlSelectPath = [];
         $sqlCountPath = [];
         $name = '';
-        array_push($sqlSelectPath, "SELECT c.id, c.name_vn, c.name_latin, g.name_vn as group_vn, f.name_vn as family_vn, o.name_vn as order_vn, c.avatar, s.name_en as species
-        from (SELECT creatures.id, creatures.name_vn, creatures.name_latin, creatures.group, creatures.family, creatures.order, creatures.species, creatures.avatar FROM creatures WHERE name_vn !='vodanh'");
+        array_push($sqlSelectPath, "SELECT 
+            c.id, 
+            c.name_vn, 
+            c.name_latin, 
+            g.name_vn as group_vn, 
+            f.name_vn as family_vn, 
+            o.name_vn as order_vn, 
+            c.author , 
+            c.avatar, 
+            c.redbook_level, 
+            s.name_vn as species_vn,
+            a.name,
+            c.created_at,
+            c.created_by
+        from (SELECT 
+                creatures.id, 
+                creatures.name_vn, 
+                creatures.name_latin, 
+                creatures.group, creatures.family, 
+                creatures.order, 
+                creatures.species, 
+                creatures.avatar,
+                author,
+                creatures.created_at,
+                creatures.created_by,
+                redbook_level FROM creatures WHERE name_vn !='vodanh'");
         array_push($sqlCountPath, "SELECT count(id) as total from creatures WHERE name_vn!='vodanh'");
-
         if (array_key_exists('family', $filter) && count(json_decode($filter['family'])) > 0) {
             $families = '(' . join(", ", json_decode($filter['family'])) . ')';
             array_push($sqlSelectPath, "AND creatures.family in {$families}");
@@ -49,8 +76,9 @@ class CreaturesRepository
             array_push($sqlCountPath, "AND creatures.name_vn like N'%{$name}%';");
         }
         $offset = array_key_exists('page', $filter) ? (intval($filter['page']) - 1) * 9 : 0;
-        array_push($sqlSelectPath, "LIMIT 9  OFFSET {$offset}");
-        array_push($sqlSelectPath, ") c, vncreatures.group g, vncreatures.family f, vncreatures.orders o, vncreatures.species as s where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id;");
+        $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 30;
+        array_push($sqlSelectPath, "LIMIT {$limit}  OFFSET {$offset}");
+        array_push($sqlSelectPath, ") c, vncreatu_vncreature_new.group g, vncreatu_vncreature_new.family f, vncreatu_vncreature_new.orders o, vncreatu_vncreature_new.species as s, vncreatu_vncreature_new.author as a where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id and c.author = a.id;");
 
         $sql = join(' ', $sqlCountPath);
         $db = $this->connection->prepare($sql);
@@ -82,11 +110,11 @@ class CreaturesRepository
             o.name_vn as order_vn,
             s.name_en as species
         from 
-            (select * from vncreatures.creatures c where c.id =:id) c, 
-            vncreatures.group g, 
-            vncreatures.family f, 
-            vncreatures.orders o, 
-            vncreatures.species s
+            (select * from vncreatu_vncreature_new.creatures c where c.id =:id) c, 
+            vncreatu_vncreature_new.group g, 
+            vncreatu_vncreature_new.family f, 
+            vncreatu_vncreature_new.orders o, 
+            vncreatu_vncreature_new.species s
         where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id;";
 
         $db = $this->connection->prepare($sql);
@@ -104,13 +132,14 @@ class CreaturesRepository
         if (array_key_exists('species', $filter) && $filter['species']) {
             $sql .= "AND species={$filter['species']} ";
         }
+        $sql .= " ORDER BY name_vn asc";
         if (!array_key_exists('all', $filter)) {
             $sql .= " LIMIT 10;";
         }
-        $sql .= " ORDER BY name_vn asc";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $creatures = $db->fetchAll();
         return $creatures;
+        return ['sql' => $sql];
     }
 }

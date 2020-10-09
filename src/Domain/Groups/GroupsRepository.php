@@ -25,7 +25,7 @@ class GroupsRepository {
      * @return array Groups The name of Groups list
      */
     public function fetchGroup() {
-        $sql = 'select * FROM vncreatures.group order by name_vn asc;';
+        $sql = 'select * FROM vncreatu_vncreature_new.group order by name_vn asc;';
         $db = $this->connection->prepare($sql);
         $db->execute();
         $Groups = $db->fetchAll();
