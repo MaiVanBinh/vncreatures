@@ -89,6 +89,7 @@ return function(App $app) {
     $app->group('/category', function(Group $group) {
         $group->get('', FetchCategory::class);
     });
+
     $app->group('/national-parks', function(Group $group) {
         $group->get('', FetchNationParks::class);
         $group->get('/{id}', FetchNationalParkById::class);
@@ -110,6 +111,12 @@ return function(App $app) {
     $app->group('/auth/users', function(Group $group) {
         $group->get('/{id}', \App\Application\Actions\User\FetchUserById::class);
     });
+
+    $app->group('/auth/creatures', function(Group $group) {
+        $group->post('/{id}', \App\Application\Actions\Creatures\CreatureEditAction::class);
+    });
+
+    $app->get('/assets/{fileName}', \App\Application\Actions\Assets\FetchAssetAction::class);
 
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
         throw new HttpNotFoundException($request);

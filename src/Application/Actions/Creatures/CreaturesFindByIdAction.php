@@ -10,7 +10,7 @@ class CreaturesFindByIdAction extends CreaturesActions {
     public function action() {
         try{
             $id = $this->resolveArg('id');
-            $creatures = $this->creaturesServices->getCreatureById($id);
+            $creatures = $this->creaturesServices->fetchCreatureById($id);
             $images = $this->assetsServices->fetchCreatureImage($id);
             $creatures['images'] = $images;
             return $this->respondWithData($creatures);

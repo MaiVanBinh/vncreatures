@@ -98,24 +98,34 @@ class CreaturesRepository
      * 
      * @return array The information of creatures
      */
-    public function FindCreaturesById($id)
+    public function fetchCreatureById($id)
     {
         $sql = "SELECT 
-            c.id, 
-            c.name_vn, 
-            c.name_latin,
-            c.description,
+            c.*,
             g.name_vn as group_vn, 
             f.name_vn as family_vn, 
             o.name_vn as order_vn,
-            s.name_en as species
+            s.name_vn as species_vn,
+            u1.username as created_by,
+            u2.username as updated_by,
+            a.name as author_name
         from 
             (select * from vncreatu_vncreature_new.creatures c where c.id =:id) c, 
             vncreatu_vncreature_new.group g, 
             vncreatu_vncreature_new.family f, 
             vncreatu_vncreature_new.orders o, 
-            vncreatu_vncreature_new.species s
-        where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id;";
+            vncreatu_vncreature_new.species s,
+            vncreatu_vncreature_new.author a,
+            vncreatu_vncreature_new.users u1,
+            vncreatu_vncreature_new.users u2
+        where 
+            c.group = g.id 
+            and c.family = f.id 
+            and c.order = o.id 
+            and a.id = c.author 
+            and u1.id = c.created_by
+            and u2.id = c.updated_by 
+            and c.species = s.id;";
 
         $db = $this->connection->prepare($sql);
         $db->execute(['id' => $id]);
@@ -142,4 +152,5 @@ class CreaturesRepository
         return $creatures;
         return ['sql' => $sql];
     }
+    
 }

@@ -41,11 +41,11 @@ final class Login extends UserAction
 
             $responseMessage = User::generateToken($email, $user['id']);
 
-            return $this->respondWithData($responseMessage, 201);
+            return $this->respondWithData(['token' =>$responseMessage, 'expirationDate' => 3600], 200);
             
         } catch (Exception $ex) {
             if ($ex instanceof HttpNotFoundException) {
-                throw $ex;
+                return $this->respondWithData(['err' => $ex->getMessage()], 404);
             }
             throw new HttpInternalServerErrorException($this->request, $ex->getMessage());
         }

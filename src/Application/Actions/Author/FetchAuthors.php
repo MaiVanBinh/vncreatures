@@ -13,7 +13,11 @@ class FetchAuthors extends AuthorAction {
             if(array_key_exists('page', $query) && $query['page']) {
                 $page = intval($query['page']);
             }
-            $author = $this->aServices->fetchAuthors($page);
+            $all = false;
+            if(array_key_exists('all', $query)) {
+                $all = true;
+            }
+            $author = $this->aServices->fetchAuthors($page, $all);
             return $this->respondWithData($author);
         } catch (Exception $err) {
             throw new HttpInternalServerErrorException($this->request, $err->getMessage());
