@@ -6,8 +6,8 @@ use Psr\Log\LoggerInterface;
 
 use App\Application\Actions\Actions;
 use App\Domain\Groups\GroupsServices;
-use App\Domain\Order\OrderServices;
-use App\Domain\Family\FamilyServices;
+use App\Domain\Orders\OrdersServices;
+use App\Domain\Families\FamiliesServices;
 use App\Domain\Species\SpeciesService;
 
 abstract class ConbineActions extends Actions
@@ -16,7 +16,7 @@ abstract class ConbineActions extends Actions
     protected $orderService;
     protected $familyServices;
 
-    public function __construct(LoggerInterface $logger, GroupsServices $groupService, OrderServices $orderService, FamilyServices $familyServices, SpeciesService $speciesServices)
+    public function __construct(LoggerInterface $logger, GroupsServices $groupService, OrdersServices $orderService, FamiliesServices $familyServices, SpeciesService $speciesServices)
     {
         parent::__construct($logger);
         $this->groupService = $groupService;

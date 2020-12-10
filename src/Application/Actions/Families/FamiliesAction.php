@@ -1,24 +1,27 @@
 <?php
 
-namespace App\Application\Actions\Posts;
+namespace App\Application\Actions\Families;
 
-use App\Application\Actions\Actions;
 use Psr\Log\LoggerInterface;
-use App\Domain\Posts\PostsServices;
+use App\Application\Actions\Actions;
 use App\Application\Actions\Validator;
+use App\Domain\Families\FamiliesServices;
 use App\Domain\User\UserServices;
+use App\Domain\Creatures\CreaturesServices;
 use Exception;
 
-abstract class PostsActions extends Actions {
-    protected $postsServices;
+abstract class FamiliesAction extends Actions{
+    protected $familiesServices;
     protected $validator;
     protected $userServices;
+    protected $creaturesService;
 
-    public function __construct(PostsServices $service, Validator $validator, LoggerInterface $logger, UserServices $userServices)
+    public function __construct(LoggerInterface $logger, FamiliesServices $familiesServices,UserServices $userServices, CreaturesServices $creaturesService, Validator $validator)
     {
         parent::__construct($logger);
-        $this->postsServices = $service;
+        $this->familiesServices = $familiesServices;
         $this->userServices = $userServices;
+        $this->creaturesService = $creaturesService;
         $this->validator = $validator;
     }
 
@@ -34,4 +37,5 @@ abstract class PostsActions extends Actions {
             throw $ex->getMessage();
         }
     }
+
 }

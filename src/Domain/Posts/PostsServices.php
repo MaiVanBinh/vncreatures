@@ -46,4 +46,17 @@ class PostsServices
         }
         return ['animal' => $animal, 'plant' => $plant, 'insect' => $insect];
     }
+
+    public function updatePost($id, $title, $author, $category, $description, $content, $userId) {
+        $this->repository->updatePost($id, $title, $author, $category, $description, $content, $userId);
+    }
+
+    public function createPost($title, $author, $category, $description, $content, $userId) {
+        $insertId = $this->repository->createPost($title, $author, $category, $description, $content, $userId);
+        return $insertId;
+    }
+
+    public function deletePost($id) {
+        $this->repository->deletePost($id);
+    }
 }

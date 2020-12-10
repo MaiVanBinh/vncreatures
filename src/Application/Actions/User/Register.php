@@ -5,8 +5,6 @@ namespace App\Application\Actions\User;
 use App\Application\Actions\User\UserAction;
 use Psr\Http\Message\UploadedFileInterface;
 use App\Exception\ValidationException;
-use Slim\Exception\RequestBodyValidationError;
-use App\Validation\Validator;
 use Respect\Validation\Validator as v;
 use App\Requests\CustomRequestHandler;
 use Exception;

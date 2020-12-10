@@ -19,6 +19,7 @@ class CreatureEditAction extends CreaturesActions
 
         // Get all file upload
         $uploadedFiles = $this->request->getUploadedFiles();
+        
         $numberImage = (int)$creatureUpdate['numberImage'];
         for($i = 0; $i < $numberImage; $i++) {
             $uploadedFile = $uploadedFiles["image{$i}"];
@@ -30,8 +31,8 @@ class CreatureEditAction extends CreaturesActions
                 if($uri->getHost() === 'localhost') {
                     $imageUrl .= ':' . $uri->getPort();
                 }
-                $imageUrl .= "/assets\/" . $filename;  
-                $id = $this->assetsServices->createAsset($imageUrl);
+                $imageUrl .= "/assets/" . $filename;  
+                $id = $this->assetsServices->createAsset($imageUrl, $filename);
                 $this->acServices->createNewOne($id, (int)$creatureId);
             }
             if (!$filename) {

@@ -10,6 +10,15 @@ class AssetsServices {
         $this->connection = $connection;
     }
 
+    public function fetchAsset($page = 1) {
+        $offset = 15 * ($page - 1);
+        $sql = "SELECT * FROM vncreatu_vncreature_new.assets limit 15 OFFSET {$offset};";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $assets = $db->fetchAll();
+        return $assets;
+    }
+
     public function fetchCreatureImage($creatureId) {
         $sql = "SELECT 
             a.id, a.url 
@@ -22,11 +31,30 @@ class AssetsServices {
         return $images;
     }
 
-    public function createAsset($url) {
-        $sql = "INSERT INTO vncreatu_vncreature_new.assets (url) VALUES ('{$url}');";
+    public function createAsset($url, $name) {
+        $sql = "INSERT INTO vncreatu_vncreature_new.assets (url, name) VALUES (:url, :name);";
         $db = $this->connection->prepare($sql);
+        $db->bindParam(':url', $url, PDO::PARAM_STR);
+        $db->bindParam(':name', $name, PDO::PARAM_STR);
         $db->execute();
         return (int)$this->connection->lastInsertId();
     }
 
+    public function countEntries() {
+        $sql = "SELECT count(id) as total from vncreatu_vncreature_new.assets;";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $total = $db->fetchAll();
+        $total = $total[0]['total'];
+        return $total;   
+    }
+
+    public function fetchAssetById($id) {
+        $sql = "SELECT * from vncreatu_vncreature_new.assets where id=:id;";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':id', $id, PDO::PARAM_INT);
+        $db->execute();
+        $assets = $db->fetchAll();
+        return $assets[0];
+    }
 }

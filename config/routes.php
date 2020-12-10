@@ -8,8 +8,7 @@ use App\Application\Actions\HomeAction;
 
 use App\Application\Actions\Species\FetchSpeciesAction;
 
-use App\Application\Actions\Bo\BoListAction;
-use App\Application\Actions\Ho\HoListAction;
+use App\Application\Actions\Orders\FetchOrders;
 
 use App\Application\Actions\Creatures\CreaturesListByFilterAction;
 use App\Application\Actions\Creatures\CreaturesFindByIdAction;
@@ -43,6 +42,7 @@ return function(App $app) {
     
     $app->group('/species', function(Group $group) {
         $group->get('', FetchSpeciesAction::class);
+        $group->post('', \App\Application\Actions\Species\CreateAction::class);
     });
 
     $app->group('/groups', function(Group $group) {
@@ -50,12 +50,12 @@ return function(App $app) {
         $group->get('', FetchGroups::class);
     });
     
-    $app->group('/bo', function(Group $group) {
-        $group->get('', BoListAction::class);
+    $app->group('/orders', function(Group $group) {
+        $group->get('', FetchOrders::class);
     });
 
-    $app->group('/ho', function(Group $group) {
-        $group->get('', HoListAction::class);
+    $app->group('/families', function(Group $group) {
+        $group->get('', \App\Application\Actions\Families\FetchFamilies::class);
     });
 
     $app->group('/creatures', function(Group $group) {
@@ -115,9 +115,43 @@ return function(App $app) {
     $app->group('/auth/creatures', function(Group $group) {
         $group->post('/{id}', \App\Application\Actions\Creatures\CreatureEditAction::class);
     });
+    $app->group('/auth/species', function(Group $group) {
+        $group->post('', \App\Application\Actions\Species\CreateAction::class);
+        $group->delete('/{id}', \App\Application\Actions\Species\DeleteAction::class);
+        $group->put('/{id}', \App\Application\Actions\Species\UpdateSpecies::class);
+    });
+
+    $app->group('/auth/groups', function(Group $group) {
+        $group->post('', \App\Application\Actions\Groups\CreateGroup::class);
+        $group->delete('/{id}', \App\Application\Actions\Groups\DeleteGroup::class);
+        $group->put('/{id}', \App\Application\Actions\Groups\UpdateGroup::class);
+    });
+
+    $app->group('/auth/orders', function(Group $group) {
+        $group->post('', \App\Application\Actions\Orders\CreateOrder::class);
+        $group->delete('/{id}', \App\Application\Actions\Orders\DeleteOrder::class);
+        $group->put('/{id}', \App\Application\Actions\Orders\UpdateOrder::class);
+    });
+
+    $app->group('/auth/families', function(Group $group) {
+        $group->post('', \App\Application\Actions\Families\CreateFamily::class);
+        $group->delete('/{id}', \App\Application\Actions\Families\DeleteFamily::class);
+        $group->put('/{id}', \App\Application\Actions\Families\UpdateFamily::class);
+    });
+
+    $app->group('/auth/posts', function(Group $group) {
+        $group->post('', \App\Application\Actions\Posts\CreatePost::class);
+        $group->delete('/{id}', \App\Application\Actions\Posts\DeletePost::class);
+        $group->put('/{id}', \App\Application\Actions\Posts\UpdatePost::class);
+    });
 
     $app->get('/assets/{fileName}', \App\Application\Actions\Assets\FetchAssetAction::class);
 
+    $app->group('/auth/assets', function(Group $group) {
+        $group->get('', \App\Application\Actions\Assets\FetchAsset::class);
+        $group->post('', \App\Application\Actions\Assets\CreateAsset::class);
+    });
+    
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
         throw new HttpNotFoundException($request);
     });

@@ -102,5 +102,28 @@ abstract class Actions {
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus($payload->getStatusCode());
     }
-    
+
+    protected function getFilterNameAndValue($array) {
+        $filter = null;
+        if(array_key_exists('id', $array)) {
+            $filter = ['name' => 'id', 'value' =>  intval($array['id'])];
+        }
+        if(array_key_exists('name_vn', $array)) {
+            $value = html_entity_decode($array["name_vn"], ENT_NOQUOTES, 'UTF-8');
+            $filter = ['name' => 'name_vn', 'value' =>  $value];
+        }
+        if(array_key_exists('name_latin', $array)) {
+            $filter = ['name' => 'name_latin', 'value' =>  $array['name_latin']];
+        }
+        if(array_key_exists('species', $array)) {
+            $filter = ['name' => 'species', 'value' =>  $array['species']];
+        }
+        if(array_key_exists('created_by_name', $array)) {
+            $filter = ['name' => 'created_by', 'value' =>  $array['created_by_name']];
+        }
+        if(array_key_exists('updated_by_name', $array)) {
+            $filter = ['name' => 'updated_by', 'value' =>  $array['updated_by_name']];
+        }
+        return $filter;
+    }
 }

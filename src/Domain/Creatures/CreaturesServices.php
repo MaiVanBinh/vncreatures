@@ -70,9 +70,9 @@ class CreaturesServices {
             array_push($sqlCountPath, "AND creatures.name_vn like N'%{$name}%';");
         }
         $offset = array_key_exists('page', $filter) ? (intval($filter['page']) - 1) * 9 : 0;
-        $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 30;
+        $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 10;
         array_push($sqlSelectPath, "LIMIT {$limit}  OFFSET {$offset}");
-        array_push($sqlSelectPath, ") c, vncreatu_vncreature_new.group g, vncreatu_vncreature_new.family f, vncreatu_vncreature_new.orders o, vncreatu_vncreature_new.species as s, vncreatu_vncreature_new.author as a where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id and c.author = a.id;");
+        array_push($sqlSelectPath, ") c, vncreatu_vncreature_new.group g, vncreatu_vncreature_new.families f, vncreatu_vncreature_new.orders o, vncreatu_vncreature_new.species as s, vncreatu_vncreature_new.author as a where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id and c.author = a.id;");
 
         $sql = join(' ', $sqlCountPath);
         $db = $this->connection->prepare($sql);
@@ -106,7 +106,7 @@ class CreaturesServices {
         from 
             (select * from vncreatu_vncreature_new.creatures c where c.id =:id) c, 
             vncreatu_vncreature_new.group g, 
-            vncreatu_vncreature_new.family f, 
+            vncreatu_vncreature_new.families f, 
             vncreatu_vncreature_new.orders o, 
             vncreatu_vncreature_new.species s,
             vncreatu_vncreature_new.author a,
@@ -153,6 +153,15 @@ class CreaturesServices {
         $sql = "UPDATE creatures c SET name_vn='{$creatures["name_vn"]}', name_latin='{$creatures["name_latin"]}', species={$creatures['species']},family={$creatures['family']},c.order={$creatures['order']},c.group={$creatures['group']},description='{$creatures["description"]}',avatar='{$creatures["avatar"]}',author={$creatures['author']},redbook_level='{$creatures["redbook_level"]}',updated_by={$userUpdateId}, updated_at='{$date}' WHERE id={$creatures['id']};";
         $db = $this->connection->prepare($sql);
         $db->execute();
+    }
+
+    public function countByFamily($familyId) {
+        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreature_new.creatures where family={$familyId}";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $result = $db->fetchAll();
+        $total = $result[0]['total'];
+        return $total;
     }
     
 };
