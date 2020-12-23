@@ -30,7 +30,7 @@ class GroupsServices
     public function fetchGroup($entires = null, $page = 1, $isFilter = false, $filter = null)
     {
         if ($isFilter) {
-            $sql = "select id, name_vn FROM vncreatu_vncreature_new.group order by name_vn asc;";
+            $sql = "select id, name_vn, species FROM vncreatu_vncreature_new.group order by name_vn asc;";
             $db = $this->connection->prepare($sql);
             $db->execute();
             $groups = $db->fetchAll();

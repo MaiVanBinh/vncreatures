@@ -3370,3 +3370,15 @@
 [2020-12-08T04:11:19.599388+00:00] slim-app.INFO: Find Groups [] {"uid":"e8a2a68"}
 [2020-12-08T04:23:49.433691+00:00] slim-app.INFO: List Species [] {"uid":"aaf5da2"}
 [2020-12-08T04:23:49.482280+00:00] slim-app.INFO: Find Groups [] {"uid":"3da4f12"}
+[2020-12-10T06:12:54.849709+00:00] slim-app.INFO: List Species [] {"uid":"f3973b0"}
+[2020-12-10T06:12:54.950177+00:00] slim-app.INFO: Find Groups [] {"uid":"0bd72c3"}
+[2020-12-10T06:13:04.971304+00:00] slim-app.INFO: List Species [] {"uid":"30a3f90"}
+[2020-12-10T06:13:05.024392+00:00] slim-app.INFO: Find Groups [] {"uid":"09ca808"}
+[2020-12-23T02:06:23.504929+00:00] slim-app.INFO: List Species [] {"uid":"0ff9a71"}
+[2020-12-23T02:06:23.616085+00:00] slim-app.INFO: Find Groups [] {"uid":"8f70312"}
+[2020-12-23T03:34:37.465009+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"832dd25"}
+[2020-12-23T03:34:54.997108+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"b7715c3"}
+[2020-12-23T03:43:18.929569+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"8bc7555"}
+[2020-12-23T03:43:22.759780+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"7f58bf6"}
+[2020-12-23T03:43:53.617686+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"51d1e06"}
+[2020-12-23T03:43:58.024526+00:00] slim-app.WARNING: Fetch filter error [] {"uid":"55ad445"}

@@ -17,7 +17,7 @@ class OrdersServices {
      */
     public function fetchOrder($entires = null, $page = 1, $isFilter = false) {
         if($isFilter) {
-            $sql = "SELECT id, name_vn FROM vncreatu_vncreature_new.orders order by name_vn asc";
+            $sql = "SELECT id, name_vn, orders.group FROM vncreatu_vncreature_new.orders order by name_vn asc";
             $db = $this->connection->prepare($sql);
             $db->execute();
             $order = $db->fetchAll();

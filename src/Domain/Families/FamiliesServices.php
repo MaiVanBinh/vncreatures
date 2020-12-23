@@ -25,7 +25,7 @@ class FamiliesServices {
      */
     public function fetchFamilies($entires = null, $page = 1, $isFilter = false) {
         if($isFilter) {
-            $sql = 'SELECT id, name_vn FROM families order by name_vn asc';
+            $sql = 'SELECT id, name_vn, families.order FROM families order by name_vn asc';
             $db = $this->connection->prepare($sql);
             $db->execute();
             $families = $db->fetchAll();
