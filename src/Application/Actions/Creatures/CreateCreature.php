@@ -6,14 +6,14 @@ use App\Application\Actions\Creatures\CreaturesActions;
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 
-class CreatureEditAction extends CreaturesActions
+class CreateCreature extends CreaturesActions
 {
     public function action()
     {
         try {
             $token = $this->request->getAttribute('token');
-            $creatureId = $this->resolveArg('id');
-            $creatureUpdate = $this->request->getParsedBody();
+            $creature = $this->request->getParsedBody();
+            $id = $this->creaturesServices->createCreature($creature, $token['id']);
 
             //upload file
             $directory = __DIR__ . '/../../../../assets/images';
@@ -21,7 +21,7 @@ class CreatureEditAction extends CreaturesActions
             // Get all file upload
             $uploadedFiles = $this->request->getUploadedFiles();
 
-            $numberImage = (int)$creatureUpdate['numberImage'];
+            $numberImage = (int)$creature['numberImage'];
 
             for ($i = 0; $i < $numberImage; $i++) {
                 $uploadedFile = $uploadedFiles["image{$i}"];
@@ -34,27 +34,23 @@ class CreatureEditAction extends CreaturesActions
                         $imageUrl .= ':' . $uri->getPort();
                     }
                     $imageUrl .= "/assets/" . $filename;
-                    $id = $this->assetsServices->createAsset($imageUrl, $filename);
-                    $this->acServices->createNewOne($id, (int)$creatureId);
+                    $idAsset = $this->assetsServices->createAsset($imageUrl, $filename);
+                    $this->acServices->createNewOne($idAsset, (int)$id);
                 }
                 if (!$filename) {
                     throw new Exception('Upload image error');
                 }
             }
-            if($creatureUpdate['imagesDeleted']) {
-                $this->acServices->deletedImages($creatureUpdate['imagesDeleted'], $creatureId);
-            }
 
-            $this->creaturesServices->editCreatureById($creatureUpdate, $token['id']);
-            $creatures = $this->creaturesServices->fetchCreatureById($creatureId);
-            $images = $this->assetsServices->fetchCreatureImage($creatureId);
-            $creatures['images'] = $images;
-            return $this->respondWithData($creatures, 200);
+           
+            // $creatures = $this->creaturesServices->fetchCreatureById($creatureId);
+            // $images = $this->assetsServices->fetchCreatureImage($creatureId);
+            // $creatures['images'] = $images;
+            return $this->respondWithData($id, 200);
         } catch (Exception $ex) {
             return $this->respondWithData($ex->getMessage(), 400);
         }
     }
-
     function moveUploadedFile(string $directory, UploadedFileInterface $uploadedFile)
     {
         $filename = strtotime("now") . explode('.', $uploadedFile->getClientFilename())[0] . '.png';

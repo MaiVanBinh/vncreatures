@@ -113,6 +113,7 @@ return function(App $app) {
     });
 
     $app->group('/auth/creatures', function(Group $group) {
+        $group->post('', \App\Application\Actions\Creatures\CreateCreature::class);
         $group->post('/{id}', \App\Application\Actions\Creatures\CreatureEditAction::class);
     });
     $app->group('/auth/species', function(Group $group) {

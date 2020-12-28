@@ -149,10 +149,36 @@ class CreaturesServices {
 
     public function editCreatureById($creatures, $userUpdateId) {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $date = date("Y/m/d h:i:sa");
+        $date = date("Y-m-d H:i:s");
         $sql = "UPDATE creatures c SET name_vn='{$creatures["name_vn"]}', name_latin='{$creatures["name_latin"]}', species={$creatures['species']},family={$creatures['family']},c.order={$creatures['order']},c.group={$creatures['group']},description='{$creatures["description"]}',avatar='{$creatures["avatar"]}',author={$creatures['author']},redbook_level='{$creatures["redbook_level"]}',updated_by={$userUpdateId}, updated_at='{$date}' WHERE id={$creatures['id']};";
         $db = $this->connection->prepare($sql);
         $db->execute();
+    }
+
+    public function createCreature($creatures, $userUpdateId) {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $date = date("Y-m-d H:i:s");
+        $sql = "INSERT into
+            creatures (name_vn, name_latin, species, family, creatures.order, creatures.group, description, avatar, author, redbook_level, created_by, created_at,updated_by, updated_at) 
+        VALUES (
+            '{$creatures["name_vn"]}', 
+            '{$creatures["name_latin"]}', 
+            {$creatures['species']}, 
+            {$creatures['family']}, 
+            {$creatures['order']}, 
+            {$creatures['group']}, 
+            '{$creatures["description"]}', 
+            '{$creatures["avatar"]}', 
+            {$creatures['author']}, 
+            '{$creatures["redbook_level"]}', 
+            {$userUpdateId},
+            '{$date}',
+            {$userUpdateId},
+            '{$date}'
+            )";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        return (int)$this->connection->lastInsertId();
     }
 
     public function countByFamily($familyId) {
