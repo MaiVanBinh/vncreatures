@@ -19,9 +19,9 @@ class PostsServices
         return $post;
     }
 
-    public function fetchPosts($category, $limit, $page)
+    public function fetchPosts($category, $limit, $page, $title = null)
     {
-        $post = $this->repository->fetchPosts($category, $limit, $page);
+        $post = $this->repository->fetchPosts($category, $limit, $page, $title);
         return $post;
     }
 

@@ -10,7 +10,7 @@ class FetchFilterDataActioncs extends ConbineActions {
         try {
             $family =  $this->familyServices->fetchFamilies(null, null, true);
             $order = $this->orderService->fetchOrder(null, null, true);
-            $group = $this->groupService->fetchGroup(null, null, true);
+            $group = $this->groupService->fetchGroup(null, null, true, null);
             $species = $this->speciesServices->fetchSpecies(true);
             $data = [];
             $data['species'] = $species;

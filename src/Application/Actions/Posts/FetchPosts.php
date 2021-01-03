@@ -12,7 +12,8 @@ class FetchPosts extends PostsActions {
             $limit = array_key_exists('limit', $query) && $query['limit'] ? $query['limit'] : 5;
             $page = array_key_exists('page', $query) && $query['page'] ? $query['page'] : 1;
             $category = array_key_exists('category', $query) && $query['category'] ? $query['category'] : '';
-            $posts = $this->postsServices->fetchPosts($category, $limit, $page);
+            $title = array_key_exists('title', $query) && $query['title'] ? $query['title'] : null;
+            $posts = $this->postsServices->fetchPosts($category, $limit, $page, $title);
             return $this->respondWithData($posts);
         } catch(Exception $err) {
             throw new HttpInternalServerErrorException($this->request, $err->getMessage());

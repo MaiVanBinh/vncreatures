@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 use App\Application\Actions\Actions;
 use App\Domain\User\UserServices;
 use App\Application\Actions\Validator;
+use Exception;
 
 abstract class UserAction extends Actions
 {
@@ -26,5 +27,29 @@ abstract class UserAction extends Actions
         parent::__construct($logger);
         $this->userServices = $userServices;
         $this->validator = $validator;
+    }
+    public function checkUserIsSuperAdmin($id) {
+        try {
+            $user = $this->userServices->checkUserIsSuperAdmin($id);
+            if(count($user) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception $ex) {
+            throw $ex->getMessage();
+        }
+    }
+    public function checkUserExist($id) {
+        try {
+            $user = $this->userServices->findUserById($id);
+            if(count($user) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception $ex) {
+            throw $ex->getMessage();
+        }
     }
 }

@@ -19,7 +19,7 @@ final class Register extends UserAction
     protected function action() {
         try {
             $this->validator->validate($this->request, [
-                "name"=>v::notEmpty(),
+                "username"=>v::notEmpty(),
                 "email"=>v::notEmpty()->email(),
                 "password"=>v::notEmpty()->alpha('1','2','3','4','5', '6', '7', '8', '9', '0')->Length(8, 16)
             ]);
@@ -30,7 +30,7 @@ final class Register extends UserAction
                 return $this->respondWithData($responseMessage, 404);
             }
             
-            $name = CustomRequestHandler::getParam($this->request,"name");
+            $name = CustomRequestHandler::getParam($this->request,"username");
             $email = CustomRequestHandler::getParam($this->request,"email");
             $password = CustomRequestHandler::getParam($this->request,"password");
             $passwordHash = User::hashPassword($password);

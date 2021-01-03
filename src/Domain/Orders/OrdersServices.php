@@ -15,7 +15,7 @@ class OrdersServices {
     /**
      * @param int id La id cua Nhom, Neu khong co se fetch tat ca
      */
-    public function fetchOrder($entires = null, $page = 1, $isFilter = false) {
+    public function fetchOrder($entires = null, $page = 1, $isFilter = false, $name_vn = null) {
         if($isFilter) {
             $sql = "SELECT id, name_vn, orders.group FROM vncreatu_vncreature_new.orders order by name_vn asc";
             $db = $this->connection->prepare($sql);
@@ -28,6 +28,10 @@ class OrdersServices {
         if($entires) {
             $offset = ($page - 1) * $entires;
             $sql = "SELECT * FROM vncreatu_vncreature_new.orders order by name_vn asc limit {$entires} offset {$offset};";
+            if($name_vn) {
+                $sql = "SELECT * FROM vncreatu_vncreature_new.orders where name_vn like '%{$name_vn}%' order by name_vn asc limit {$entires} offset {$offset};";
+                $sqlCount = "SELECT count(id) as total FROM vncreatu_vncreature_new.orders where name_vn like '%{$name_vn}%';";
+            }
         }
         $db = $this->connection->prepare($sqlCount);
         $db->execute();

@@ -23,7 +23,7 @@ class FamiliesServices {
     /**
      * @param int id La id cua Ho, Neu khong co se fetch tat ca
      */
-    public function fetchFamilies($entires = null, $page = 1, $isFilter = false) {
+    public function fetchFamilies($entires = null, $page = 1, $isFilter = false, $name_vn = null) {
         if($isFilter) {
             $sql = 'SELECT id, name_vn, families.order FROM families order by name_vn asc';
             $db = $this->connection->prepare($sql);
@@ -31,11 +31,16 @@ class FamiliesServices {
             $families = $db->fetchAll();
             return $families;
         }
+
         $sql = 'SELECT * FROM families order by name_vn asc';
         $sqlCount = 'SELECT count(id) as total FROM families';
         if($entires) {
             $offset = ($page - 1) * $entires;
             $sql = "SELECT * FROM families order by name_vn asc limit {$entires} offset {$offset};";
+            if($name_vn) {
+                $sql = "SELECT * FROM families where name_vn like '%{$name_vn}%' order by name_vn asc limit {$entires} offset {$offset};";
+                $sqlCount = "SELECT count(id) as total FROM families where name_vn like '%{$name_vn}%';";
+            }
         }
         $db = $this->connection->prepare($sqlCount);
         $db->execute();

@@ -6,8 +6,6 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 use App\Application\Actions\HomeAction;
 
-use App\Application\Actions\Species\FetchSpeciesAction;
-
 use App\Application\Actions\Orders\FetchOrders;
 
 use App\Application\Actions\Creatures\CreaturesListByFilterAction;
@@ -41,7 +39,7 @@ return function(App $app) {
     $app->get('/', HomeAction::class)->setName('home');
     
     $app->group('/species', function(Group $group) {
-        $group->get('', FetchSpeciesAction::class);
+        $group->get('', \App\Application\Actions\Species\FetchSpeciesAction::class);
         $group->post('', \App\Application\Actions\Species\CreateAction::class);
     });
 
@@ -110,6 +108,7 @@ return function(App $app) {
 
     $app->group('/auth/users', function(Group $group) {
         $group->get('/{id}', \App\Application\Actions\User\FetchUserById::class);
+        $group->get('', \App\Application\Actions\User\FetchUsersAction::class);
     });
 
     $app->group('/auth/creatures', function(Group $group) {

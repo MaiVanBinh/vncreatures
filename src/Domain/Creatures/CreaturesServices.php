@@ -132,13 +132,13 @@ class CreaturesServices {
 
     public function fetchCreatureRedBook($filter)
     {
-        $sql = "SELECT id, name_vn, name_latin, redbook_level FROM creatures where redbook_level is not null ";
+        $sql = "SELECT id, name_vn, name_latin, redbook_level, avatar FROM creatures where redbook_level is not null AND avatar is not null ";
         if (array_key_exists('species', $filter) && $filter['species']) {
             $sql .= "AND species={$filter['species']} ";
         }
         $sql .= " ORDER BY name_vn asc";
         if (!array_key_exists('all', $filter)) {
-            $sql .= " LIMIT 10;";
+            $sql .= " LIMIT 4;";
         }
         $db = $this->connection->prepare($sql);
         $db->execute();

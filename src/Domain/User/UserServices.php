@@ -68,4 +68,22 @@ class UserServices
         $users = $db->fetchAll();
         return $users;
     }
+
+    public function checkUserIsSuperAdmin($id) {
+        $sql = 'SELECT id, username, email FROM users WHERE id=:id and role ="1";';
+        $db = $this->connection->prepare($sql);
+        $db->execute(['id' => $id]);
+        $users = $db->fetchAll();
+        return $users;
+    }
+
+    public function fetchUser($page = 1) {
+        $offset = ($page - 1) * 10;
+        $sql = "SELECT id, username, email, role, created_by, created_at, updated_at from users limit 10 offset :offset;";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $db->execute();
+        $users = $db->fetchAll();
+        return $users;
+    }
 }

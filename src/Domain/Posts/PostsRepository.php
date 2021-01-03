@@ -33,35 +33,29 @@ class PostsRepository
         }
     }
 
-    public function fetchPosts($category, $limitPost, $page)
+    public function fetchPosts($category, $limitPost = 10, $page = 1, $title = null)
     {
         $offset = ($page - 1) * $limitPost;
-        $db = null;
-        if ($category) {
-            $sql = "SELECT * FROM posts where category =:category order by id LIMIT :limitPost OFFSET :offset;";
-            $db = $this->connection->prepare($sql);
-            $db->bindParam(':category', $category, PDO::PARAM_INT);
-
-            $sqlCount = "SELECT count(id) as total FROM posts where category =:category;";
-            $dbCount = $this->connection->prepare($sqlCount);
-            $dbCount->bindParam(':category', $category, PDO::PARAM_INT);
-        } else {
-            $sql = "SELECT * FROM posts where category in (1,2) order by id LIMIT :limitPost OFFSET :offset";
-            $sqlCount = "SELECT count(id) as total FROM posts;";
-            $db = $this->connection->prepare($sql);
-            $dbCount = $this->connection->prepare($sqlCount);
+        $sql = "SELECT * FROM posts order by id LIMIT :limitPost OFFSET :offset";
+        $sqlCount = "SELECT count(id) as total FROM posts;";
+        if ($title) {
+            $sql = "SELECT * FROM posts where title like '%{$title}%' order by id LIMIT :limitPost OFFSET :offset";
+            $sqlCount = "SELECT count(id) as total FROM posts where title like '%{$title}%';";
         }
+        if ($category) {
+            $sql = "SELECT * FROM posts where category={$category} order by id LIMIT :limitPost OFFSET :offset";
+            $sqlCount = "SELECT count(id) as total FROM posts;";
+        }
+        $db = $this->connection->prepare($sql);
+        $dbCount = $this->connection->prepare($sqlCount);
         $dbCount->execute();
         $total = $dbCount->fetchAll()[0]['total'];
         $db->bindParam(':limitPost', $limitPost, PDO::PARAM_INT);
         $db->bindParam(':offset', $offset, PDO::PARAM_INT);
         $db->execute();
         $posts = $db->fetchAll();
-        // return ['total' => $total, 'posts' => $posts];
-        // return ['posts' => $posts, 'total' => $total];
-        // if ($category === '6' || $category === '7' || $category === '8') {
-            
-        // }
+
+
         $postsUpdate = [];
         for ($i = 0; $i < count($posts); $i++) {
             $id = (int) $posts[$i]['id'];
@@ -89,7 +83,39 @@ class PostsRepository
             }
         }
         return ['total' => $total, 'posts' => $postsUpdate];
-        return ['sql' => $sql];
+
+        return ['total' => $total, 'posts' => $posts];
+
+
+        // $db = null;
+        // if ($category) {
+        //     $sql = "SELECT * FROM posts where category =:category order by id LIMIT :limitPost OFFSET :offset;";
+        //     $db = $this->connection->prepare($sql);
+        //     $db->bindParam(':category', $category, PDO::PARAM_INT);
+
+        //     $sqlCount = "SELECT count(id) as total FROM posts where category =:category;";
+        //     $dbCount = $this->connection->prepare($sqlCount);
+        //     $dbCount->bindParam(':category', $category, PDO::PARAM_INT);
+        // } else {
+        //     // $sql = "SELECT * FROM posts where category in (1,2) order by id LIMIT :limitPost OFFSET :offset";
+        //     $sql = "SELECT * FROM posts order by id LIMIT :limitPost OFFSET :offset";
+        //     $sqlCount = "SELECT count(id) as total FROM posts;";
+        //     $db = $this->connection->prepare($sql);
+        //     $dbCount = $this->connection->prepare($sqlCount);
+        // }
+        // $dbCount->execute();
+        // $total = $dbCount->fetchAll()[0]['total'];
+        // $db->bindParam(':limitPost', $limitPost, PDO::PARAM_INT);
+        // $db->bindParam(':offset', $offset, PDO::PARAM_INT);
+        // $db->execute();
+        // $posts = $db->fetchAll();
+        // // 
+        // // return ['posts' => $posts, 'total' => $total];
+        // // if ($category === '6' || $category === '7' || $category === '8') {
+
+        // // }
+
+        // return ['sql' => $sql];
     }
 
     public function fetchPostIndentify()
