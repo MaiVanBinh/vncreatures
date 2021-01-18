@@ -190,5 +190,11 @@ class CreaturesServices {
         return $total;
     }
     
+    public function deleteCreature($id) {
+        $sql = "DELETE FROM creatures WHERE id=:id";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':id', $id, PDO::PARAM_INT);
+        $db->execute();
+    }
 };
 

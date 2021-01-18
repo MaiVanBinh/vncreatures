@@ -11,20 +11,14 @@ class UserDeleteAction extends UserAction{
      */
     protected function action() {
         try {
+            $token = $this->request->getAttribute('token');
+            $valid = $this->userServices->checkUserIsSuperAdmin($token['id']);
+            if(!$valid) {
+                return $this->respondWithData('Not Auth', 401);
+            } 
             $id = $this->resolveArg('id');
-            $user = $this->userServices->findUserById($id);
-            if($user) {
-                unlink( __DIR__ . '/../../../../assets/images/' . $user['imageUrl']);
-            } else {
-                throw new Exception('User Not Found');
-            }
-            
-            $id = $this->userServices->deleteUserById($id);
-            $result = ['id' => $id];
-            
-            $this->logger->info('Delete User', $result);
-            
-            return $this->respondWithData($result, 200);
+            $this->userServices->deleteUser($id);
+            return $this->respondWithData('Delete User', 200);
         } catch(Exception $e) {
             $this->logger->warning('User detele not success');
             throw new Exception($e->getMessage());

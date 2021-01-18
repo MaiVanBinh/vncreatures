@@ -88,6 +88,10 @@ return function(App $app) {
         $group->get('', FetchCategory::class);
     });
 
+    $app->group('/woods', function(Group $group) {
+        $group->get('', \App\Application\Actions\Wood\FetchWood::class);
+    });
+
     $app->group('/national-parks', function(Group $group) {
         $group->get('', FetchNationParks::class);
         $group->get('/{id}', FetchNationalParkById::class);
@@ -109,11 +113,13 @@ return function(App $app) {
     $app->group('/auth/users', function(Group $group) {
         $group->get('/{id}', \App\Application\Actions\User\FetchUserById::class);
         $group->get('', \App\Application\Actions\User\FetchUsersAction::class);
+        $group->delete('/{id}', \App\Application\Actions\User\UserDeleteAction::class);
     });
 
     $app->group('/auth/creatures', function(Group $group) {
         $group->post('', \App\Application\Actions\Creatures\CreateCreature::class);
         $group->post('/{id}', \App\Application\Actions\Creatures\CreatureEditAction::class);
+        $group->delete('/{id}', \App\Application\Actions\Creatures\DeleteCreature::class);
     });
     $app->group('/auth/species', function(Group $group) {
         $group->post('', \App\Application\Actions\Species\CreateAction::class);
@@ -150,6 +156,7 @@ return function(App $app) {
     $app->group('/auth/assets', function(Group $group) {
         $group->get('', \App\Application\Actions\Assets\FetchAsset::class);
         $group->post('', \App\Application\Actions\Assets\CreateAsset::class);
+        $group->delete('/{id}', \App\Application\Actions\Assets\DeleteAsset::class);
     });
     
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

@@ -23,6 +23,7 @@ class DeletePost extends PostsActions {
                     $responseMessage = $this->validator->errors;
                     return $this->respondWithData($responseMessage, 404);
                 }
+                $this->assetsServices->unLinkAssetPost($id);
                 $this->postsServices->deletePost($id);
                 return $this->respondWithData("Delete Success");
             } else {

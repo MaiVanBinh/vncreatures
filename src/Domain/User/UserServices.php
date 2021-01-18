@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 
+use App\Application\Actions\Posts\UpdatePost;
 use App\Domain\User\UserRepository;
 use App\Models\User;
 use Exception;
@@ -79,11 +80,18 @@ class UserServices
 
     public function fetchUser($page = 1) {
         $offset = ($page - 1) * 10;
-        $sql = "SELECT id, username, email, role, created_by, created_at, updated_at from users limit 10 offset :offset;";
+        $sql = "SELECT id, username, email, role, created_by, created_at, updated_at from users where state = 1 limit 10 offset :offset;";
         $db = $this->connection->prepare($sql);
         $db->bindParam(':offset', $offset, PDO::PARAM_INT);
         $db->execute();
         $users = $db->fetchAll();
         return $users;
+    }
+
+    public function deleteUser($id) {
+        $sql = "UPDATE users set state = 0 where id=:id;";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':id', $id, PDO::PARAM_INT);
+        $db->execute();
     }
 }
