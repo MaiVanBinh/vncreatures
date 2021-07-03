@@ -11,6 +11,9 @@ class CreaturesFindByIdAction extends CreaturesActions {
         try{
             $id = $this->resolveArg('id');
             $creatures = $this->creaturesServices->fetchCreatureById($id);
+            if(count($creatures) == 0) {
+                return $this->respondWithData("Not Found", 404);
+            }
             $images = $this->assetsServices->fetchCreatureImage($id);
             $creatures['images'] = $images;
             return $this->respondWithData($creatures);

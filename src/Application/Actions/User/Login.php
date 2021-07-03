@@ -19,29 +19,30 @@ final class Login extends UserAction
     {
         try {
             $this->validator->validate($this->request, [
-                "email" => v::notEmpty()->email(),
-                "password" => v::notEmpty()->alpha()
+                "username" => v::notEmpty()->length(5, 20),
+                "password" => v::notEmpty()->alpha('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')->Length(8, 16)
             ]);
 
             if ($this->validator->failed()) {
                 $responseMessage = $this->validator->errors;
-                return $this->respondWithData($responseMessage, 404);
+                return $this->respondWithData($responseMessage, 400);
             }
-
-            $email = CustomRequestHandler::getParam($this->request, "email");
+            
+            $username = CustomRequestHandler::getParam($this->request, "username");
             $password = CustomRequestHandler::getParam($this->request, "password");
 
-            $user = $this->userServices->findUserByEmail($email);
+            $user = $this->userServices->findUserByUsername($username);
 
             $verify = password_verify($password, $user['password']);
 
             if ($verify == false) {
-                throw new HttpNotFoundException($this->request, 'User Not Found');
+                throw new HttpNotFoundException($this->request, 'User name or password wrong');
             }
 
-            $responseMessage = User::generateToken($email, $user['id']);
+            $responseMessage = User::generateToken($user['id']);
 
-            return $this->respondWithData(['token' =>$responseMessage, 'expirationDate' => 3600], 200);
+            unset($user['password']);
+            return $this->respondWithData(['token' =>$responseMessage, 'expirationDate' => 3600, 'user' => $user], 200);
             
         } catch (Exception $ex) {
             if ($ex instanceof HttpNotFoundException) {

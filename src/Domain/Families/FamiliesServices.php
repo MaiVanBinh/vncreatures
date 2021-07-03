@@ -23,36 +23,46 @@ class FamiliesServices {
     /**
      * @param int id La id cua Ho, Neu khong co se fetch tat ca
      */
-    public function fetchFamilies($entires = null, $page = 1, $isFilter = false, $name_vn = null) {
+    public function fetchFamilies($limit = 10, $page = 1, $isFilter = false, $name = '', $order = null) {
         if($isFilter) {
-            $sql = 'SELECT id, name_vn, families.order FROM families order by name_vn asc';
+            $sql = 'SELECT id, name_vn, name_latin, families.order FROM families order by name_vn asc';
             $db = $this->connection->prepare($sql);
             $db->execute();
             $families = $db->fetchAll();
             return $families;
         }
 
-        $sql = 'SELECT * FROM families order by name_vn asc';
-        $sqlCount = 'SELECT count(id) as total FROM families';
-        if($entires) {
-            $offset = ($page - 1) * $entires;
-            $sql = "SELECT * FROM families order by name_vn asc limit {$entires} offset {$offset};";
-            if($name_vn) {
-                $sql = "SELECT * FROM families where name_vn like '%{$name_vn}%' order by name_vn asc limit {$entires} offset {$offset};";
-                $sqlCount = "SELECT count(id) as total FROM families where name_vn like '%{$name_vn}%';";
-            }
-        }
-        $db = $this->connection->prepare($sqlCount);
-        $db->execute();
-        $total = $db->fetchAll();
+        $sql = 'SELECT f.*, o.name_vn as order_vn FROM families f, vncreatu_vncreatures.orders o where o.id=f.order and f.name_vn like :nameString limit :limit offset :offset;';
+        $sqlCount = 'SELECT count(id) as total FROM families where name_vn like :nameString';
         $db = $this->connection->prepare($sql);
+        $dbCount = $this->connection->prepare($sqlCount);
+        
+        if($order) {
+             $sql = 'SELECT f.*, o.name_vn as order_vn FROM families f, vncreatu_vncreatures.orders o where o.id=f.order and f.name_vn like :nameString and f.order=:order limit :limit offset :offset;';
+            $sqlCount = 'SELECT count(id) as total FROM families where name_vn like :nameString and families.order=:order';
+            $db = $this->connection->prepare($sql);
+            $dbCount = $this->connection->prepare($sqlCount);
+            $db->bindParam(':order', $order, PDO::PARAM_INT);
+            $dbCount->bindParam(':order', $order, PDO::PARAM_INT);
+        }
+        $offset = ($page-1) * $limit;
+        $nameString = '%' . $name . '%';
+        $db->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        $db->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $db->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $dbCount->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        
+        $dbCount->execute();
+        $total = $dbCount->fetchAll();
         $db->execute();
         $families = $db->fetchAll();
         return ['total' => $total[0]['total'], 'families' => $families];
+        
+        
     }
 
     public function countByOrder($orderId) {
-        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreature_new.families where families.order=:orderId";
+        $sql = "SELECT COUNT(id) AS total FROM families where families.order=:orderId";
         $db = $this->connection->prepare($sql);
         $db->bindParam(':orderId', $orderId, PDO::PARAM_INT);
         $db->execute();
@@ -63,7 +73,7 @@ class FamiliesServices {
     
     public function create($name_vn, $name_latin, $order, $userId) {
         try {
-            $sql = "INSERT INTO vncreatu_vncreature_new.families (name_vn, name_latin, families.order, created_by, updated_by) values (:name_vn, :name_latin, :order, :userId, :userId)";
+            $sql = "INSERT INTO families (name_vn, name_latin, families.order, created_by, updated_by) values (:name_vn, :name_latin, :order, :userId, :userId)";
             $db = $this->connection->prepare($sql);
             $db->bindParam(':name_vn', $name_vn, PDO::PARAM_STR);
             $db->bindParam(':name_latin', $name_latin, PDO::PARAM_STR);
@@ -79,7 +89,7 @@ class FamiliesServices {
 
     public function fetchFamilyById($id) {
         try {
-            $sql = "SELECT * from vncreatu_vncreature_new.families where id=:id";
+            $sql = "SELECT * from families where id=:id";
             $db = $this->connection->prepare($sql);
             $db->bindParam(':id', $id, PDO::PARAM_INT);
             $db->execute();
@@ -93,7 +103,7 @@ class FamiliesServices {
     public function delete($id)
     {
         try {
-            $sql = "DELETE FROM vncreatu_vncreature_new.families WHERE id=:id";
+            $sql = "DELETE FROM families WHERE id=:id";
             $db = $this->connection->prepare($sql);
             $db->bindParam(':id', $id, PDO::PARAM_INT);
             $db->execute();
@@ -105,7 +115,7 @@ class FamiliesServices {
     public function update($id, $name_vn, $name_latin, $order, $userId) {
         try {
             $dateNow = date('Y-m-d H:i:s');
-            $sql = "UPDATE vncreatu_vncreature_new.families 
+            $sql = "UPDATE families 
                     SET 
                         name_vn=:name_vn, 
                         name_latin=:name_latin,
@@ -125,5 +135,13 @@ class FamiliesServices {
         } catch (Exception $ex) {
             throw $ex;
         }
+    }
+    public function countFamilies() {
+        $sql = "SELECT COUNT(id) AS total FROM families;";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $result = $db->fetchAll();
+        $total = $result[0]['total'];
+        return $total;
     }
 }

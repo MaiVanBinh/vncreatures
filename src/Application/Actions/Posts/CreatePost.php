@@ -8,40 +8,50 @@ use App\Requests\CustomRequestHandler;
 use Exception;
 use Slim\Exception\HttpInternalServerErrorException;
 
-class CreatePost extends PostsActions {
-    public function action() {
+class CreatePost extends PostsActions
+{
+    public function action()
+    {
         try {
             $token = $this->request->getAttribute('token');
-            $isUserExist = false;
-            if($token) {
-                $isUserExist = $this->checkUserExist($token['id']);
+            $this->validator->validate($this->request, [
+                "title" => v::notEmpty(),
+                "description" => v::notEmpty(),
+                "language" => v::notEmpty(),
+                'category' => v::digit(),
+                'is_publish' => v::boolType()
+            ]);
+            if ($this->validator->failed()) {
+                $responseMessage = $this->validator->errors;
+                return $this->respondWithData($responseMessage, 400);
             }
-            if($isUserExist) {
-                $this->validator->validate($this->request, [
-                    "title"=>v::notEmpty(),
-                    "description"=>v::notEmpty(),
-                    "content"=>v::notEmpty(),
-                    'category'=>v::digit()
-                ]);
-                if($this->validator->failed())
-                {
-                    $responseMessage = $this->validator->errors;
-                    return $this->respondWithData($responseMessage, 404);
-                }
 
-                $title = CustomRequestHandler::getParam($this->request, "title");
-                $author = CustomRequestHandler::getParam($this->request, "author");
-                $category = CustomRequestHandler::getParam($this->request, "category");
-                $description = CustomRequestHandler::getParam($this->request, "description");
-                $content = CustomRequestHandler::getParam($this->request, "content");
-                $newId = $this->postsServices->createPost($title, $author, $category, $description, $content, $token['id']);
-                $newPost = $this->postsServices->fetchPostById($newId);
-                return $this->respondWithData($newPost);
-            } else {
-                return $this->respondWithData('Unauthorzied', 401);
+            $title = CustomRequestHandler::getParam($this->request, "title");
+            $category = CustomRequestHandler::getParam($this->request, "category");
+            $description = CustomRequestHandler::getParam($this->request, "description");
+            $content = CustomRequestHandler::getParam($this->request, "content");
+            $is_publish = CustomRequestHandler::getParam($this->request, "is_publish");
+            $language =  CustomRequestHandler::getParam($this->request, "language") == 'en' ? 'en' : 'vn';
+            // get list images
+            $images = CustomRequestHandler::getParam($this->request, "images");
+
+            for($i = 0; $i < count($images); $i++) {
+                $isImageExist = (int)$this->checkImageExistById($images[$i]);
+                if(!$isImageExist) {
+                    return $this->respondWithData("Image: {$images[$i]} is not exits", 400);
+                }
             }
+            // create new Post
+            $newId = $this->postsServices->createPost($title, $category, $description, $content, $token['id'], $is_publish,  $language);
             
-        } catch(Exception $e) {
+            // link image with post
+            for($i = 0; $i < count($images); $i++) {
+                $this->PIServices->linkPostWithImage($newId, $images[$i], $token['id']);
+                $this->assetsServices->useImage($images[$i], true);
+            }
+            $newPost = $this->postsServices->fetchPostById($newId);
+            return $this->respondWithData($newPost);
+        } catch (Exception $e) {
             throw new HttpInternalServerErrorException($this->request, $e->getMessage());
         }
     }

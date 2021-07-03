@@ -12,6 +12,11 @@ class DeleteCreature extends CreaturesActions
     {
         try {
             $token = $this->request->getAttribute('token');
+            if ($token) {
+                if (!$this->checkUserExist($token['id'])) {
+                    return $this->respondWithData('Unauthorzied', 401);
+                };
+            }
             $creatureId = $this->resolveArg('id');
             $this->assetsServices->unLinkAssetCretures($creatureId);
             $this->creaturesServices->deleteCreature($creatureId);
@@ -19,13 +24,5 @@ class DeleteCreature extends CreaturesActions
         } catch (Exception $ex) {
             return $this->respondWithData($ex->getMessage(), 400);
         }
-    }
-
-    function moveUploadedFile(string $directory, UploadedFileInterface $uploadedFile)
-    {
-        $filename = strtotime("now") . explode('.', $uploadedFile->getClientFilename())[0] . '.png';
-        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
-
-        return explode(".", $filename)[0];
     }
 }

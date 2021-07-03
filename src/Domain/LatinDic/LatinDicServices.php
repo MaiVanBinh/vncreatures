@@ -11,8 +11,12 @@ class LatinDicServices {
         $this->repository = $repository;
     }
 
-    public function fetchLatinDic($latin) {
-        $viet = $this->repository->fetchLatinDic($latin);
+    public function latinToViet($latin) {
+        $viet = $this->repository->latinToViet($latin);
+        return $viet;
+    }
+    public function VietToLatin($latin) {
+        $viet = $this->repository->VietToLatin($latin);
         return $viet;
     }
 }

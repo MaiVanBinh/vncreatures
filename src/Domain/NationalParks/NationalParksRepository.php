@@ -12,7 +12,7 @@ class NationalParksRepository {
     }
 
     public function fetchNationalParkById($id) {
-        $sql = "SELECT * FROM vncreatu_vncreature_new.national_parks WHERE id=:id;";
+        $sql = "SELECT * FROM national_parks WHERE id=:id;";
         $db = $this->connection->prepare($sql);
         $db->execute(['id' => $id]);
         $nationalPark = $db->fetchAll();
@@ -20,7 +20,7 @@ class NationalParksRepository {
     }
 
     public function fetchNationParks() {
-        $sql = "SELECT id, name, coords, location FROM vncreatu_vncreature_new.national_parks WHERE coords!='';";
+        $sql = "SELECT id, name, coords, location, location_en FROM national_parks WHERE coords!='';";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $npCoords = $db->fetchAll();

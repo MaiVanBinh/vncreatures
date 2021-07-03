@@ -8,8 +8,6 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class CreateAsset extends AssetsAction
 {
-
-
     public function action()
     {
         try {
@@ -21,19 +19,20 @@ class CreateAsset extends AssetsAction
             // Get all file upload
             $uploadedFiles = $this->request->getUploadedFiles();
 
-
-            $title = $this->request->getParsedBody()['title'];
             $uploadedFile = $uploadedFiles['image'];
-
+            $size = $uploadedFile->getSize();
+            $name = $uploadedFile->getClientFilename();
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                $filename = $this->moveUploadedFile($directory, $uploadedFile, $title);
+                $filename = $this->moveUploadedFile($directory, $uploadedFile, $name);
+                
                 $uri = $this->request->getUri();
                 $imageUrl = $uri->getScheme() . '://' . $uri->getHost();
+                
                 if ($uri->getHost() === 'localhost') {
-                    $imageUrl .= ':' . $uri->getPort();
+                   $imageUrl .= ':' . $uri->getPort();
                 }
-                $imageUrl .= '/assets/' . $filename;
-                $id = $this->assetsServices->createAsset($imageUrl, $filename);
+                $imageUrl .= '/vnback/assets/' . explode(".", $filename)[0];
+                $id = $this->assetsServices->createAsset($imageUrl, $filename, $size, $token['id']);
                 $asset = $this->assetsServices->fetchAssetById($id);
                 return $this->respondWithData($asset);
             }
@@ -44,9 +43,9 @@ class CreateAsset extends AssetsAction
     }
     public function moveUploadedFile(string $directory, UploadedFileInterface $uploadedFile, string $title)
     {
-        $filename = strtotime("now") . $title . '.png';
+        $filename = strtotime("now") ."_". $title;
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
-        return explode(".", $filename)[0];;
+        return $filename;
     }
 }

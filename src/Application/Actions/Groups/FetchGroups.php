@@ -9,19 +9,23 @@ class FetchGroups extends GroupsAction {
     public function action() {
         try{
             $filter = $this->request->getQueryParams();
-            $entires = array_key_exists('entires', $filter) ? intval($filter['entires']) : null;
-            $page = array_key_exists('page', $filter) ? intval($filter['page']) : null;
-            $filter = $this->getFilterNameAndValue($filter);
-            // if(array_key_exists('id', $filter)) {
+            $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 10;
+            $page = array_key_exists('page', $filter) ? intval($filter['page']) : 1;
+            $name = array_key_exists('name', $filter) ? $filter['name'] : '';
+            $species = array_key_exists('species', $filter) ? intval($filter['species']) : null;
 
-            // }
-            $groups = $this->groupsServices->fetchGroup($entires, $page,null, $filter);
-            $this->logger->info('Find Groups');
-            array_push($groups, count($groups));
+            $groups = $this->groupsServices->fetchGroup($limit, $page,null, $name, $species);
+
+             // get page
+             $total = $groups['total'];
+             $maxPage = ceil($total / $limit);
+             $hasPrev = $page == 1 || $page - 1 > $maxPage ? false : true;
+             $hasNext = $page >= $maxPage ? false : true;
+             $groups['pages'] = ['total' => $maxPage, 'current' => (int)$page, 'prev' => $page - 1, 'next' => $page + 1, 'hasPrev' => $hasPrev, 'hasNext' => $hasNext];
             return $this->respondWithData($groups);
         } catch(Exception $e) {
             $this->logger->warning('Groups list by Species id error');
             throw new Exception($e->getMessage());
         }
     }
-} 
+}

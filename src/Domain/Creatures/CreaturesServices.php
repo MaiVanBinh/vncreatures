@@ -34,7 +34,11 @@ class CreaturesServices {
             s.name_vn as species_vn,
             a.name,
             c.created_at,
-            c.created_by
+            c.created_by,
+            c.order,
+            c.group,
+            c.family,
+            c.species
         from (SELECT 
                 creatures.id, 
                 creatures.name_vn, 
@@ -49,14 +53,29 @@ class CreaturesServices {
                 redbook_level FROM creatures WHERE name_vn !='vodanh'");
         array_push($sqlCountPath, "SELECT count(id) as total from creatures WHERE name_vn!='vodanh'");
         if (array_key_exists('family', $filter) && count(json_decode($filter['family'])) > 0) {
+            // if(count(json_decode($filter['family'])) == 1) {
+            //     $families = '(' . $filter[family] . ')';
+            // } else {
+            //     $families = '(' . join(", ", json_decode($filter['family'])) . ')';
+            // }
             $families = '(' . join(", ", json_decode($filter['family'])) . ')';
             array_push($sqlSelectPath, "AND creatures.family in {$families}");
             array_push($sqlCountPath, "AND creatures.family in {$families}");
         } else if (array_key_exists('order', $filter) && count(json_decode($filter['order'])) > 0) {
+            // if(count(json_decode($filter['order'])) == 1) {
+            //     $order = '(' . $filter['order'] . ')';
+            // } else {
+            //     $order = '(' . join(", ", json_decode($filter['order'])) . ')';
+            // }
             $order = '(' . join(", ", json_decode($filter['order'])) . ')';
             array_push($sqlSelectPath, "AND creatures.order in {$order}");
             array_push($sqlCountPath, "AND creatures.order in {$order}");
         } else if (array_key_exists('group', $filter) && count(json_decode($filter['group'])) > 0) {
+            // if(count(json_decode($filter['group'])) == 1) {
+            //     $groups = '(' . $filter['group'] . ')';
+            // } else {
+            //     $groups = '(' . join(", ", json_decode($filter['group'])) . ')';
+            // }
             $groups = '(' . join(", ", json_decode($filter['group'])) . ')';
             array_push($sqlSelectPath, "AND creatures.group in {$groups}");
             array_push($sqlCountPath, "AND creatures.group in {$groups}");
@@ -69,10 +88,14 @@ class CreaturesServices {
             array_push($sqlSelectPath, "AND name_vn like N'%{$name}%'");
             array_push($sqlCountPath, "AND creatures.name_vn like N'%{$name}%';");
         }
+        if (array_key_exists('redbook', $filter) && $filter['redbook'] && $filter['redbook'] !== 0) {
+            array_push($sqlSelectPath, "AND creatures.redbook_level is not null");
+            array_push($sqlCountPath, "AND creatures.redbook_level is not null");
+        }
         $offset = array_key_exists('page', $filter) ? (intval($filter['page']) - 1) * 9 : 0;
         $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 10;
-        array_push($sqlSelectPath, "LIMIT {$limit}  OFFSET {$offset}");
-        array_push($sqlSelectPath, ") c, vncreatu_vncreature_new.group g, vncreatu_vncreature_new.families f, vncreatu_vncreature_new.orders o, vncreatu_vncreature_new.species as s, vncreatu_vncreature_new.author as a where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id and c.author = a.id;");
+        array_push($sqlSelectPath, "order by creatures.name_vn asc LIMIT {$limit}  OFFSET {$offset}");
+        array_push($sqlSelectPath, ") c, vncreatu_vncreatures.group g, families f, vncreatu_vncreatures.orders o, species as s, author as a where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id and c.author = a.id;");
 
         $sql = join(' ', $sqlCountPath);
         $db = $this->connection->prepare($sql);
@@ -100,18 +123,22 @@ class CreaturesServices {
             f.name_vn as family_vn, 
             o.name_vn as order_vn,
             s.name_vn as species_vn,
+            g.name_latin as group_latin, 
+            f.name_latin as family_latin, 
+            o.name_latin  as order_latin,
+            s.name_en as species_en,
             u1.username as created_by,
             u2.username as updated_by,
             a.name as author_name
         from 
-            (select * from vncreatu_vncreature_new.creatures c where c.id =:id) c, 
-            vncreatu_vncreature_new.group g, 
-            vncreatu_vncreature_new.families f, 
-            vncreatu_vncreature_new.orders o, 
-            vncreatu_vncreature_new.species s,
-            vncreatu_vncreature_new.author a,
-            vncreatu_vncreature_new.users u1,
-            vncreatu_vncreature_new.users u2
+            (select * from creatures c where c.id =:id) c, 
+            vncreatu_vncreatures.group g, 
+            families f, 
+            vncreatu_vncreatures.orders o, 
+            species s,
+            author a,
+            users u1,
+            users u2
         where 
             c.group = g.id 
             and c.family = f.id 
@@ -182,7 +209,7 @@ class CreaturesServices {
     }
 
     public function countByFamily($familyId) {
-        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreature_new.creatures where family={$familyId}";
+        $sql = "SELECT COUNT(id) AS total FROM creatures where family={$familyId}";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $result = $db->fetchAll();
@@ -196,5 +223,13 @@ class CreaturesServices {
         $db->bindParam(':id', $id, PDO::PARAM_INT);
         $db->execute();
     }
-};
 
+    public function countCreatures () {
+        $sql = "SELECT COUNT(id) AS total FROM creatures;";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $result = $db->fetchAll();
+        $total = $result[0]['total'];
+        return $total;
+    }
+};

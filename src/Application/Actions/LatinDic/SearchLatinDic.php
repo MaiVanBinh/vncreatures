@@ -10,12 +10,15 @@ class SearchLatinDic extends LatinDicAction {
             $query = $this->request->getQueryParams();
             $result = null;
             if(array_key_exists('latin', $query) && $query['latin']) {
-                $result = $this->services->fetchLatinDic($query['latin']);
+                $result = $this->services->latinToViet($query['latin']);
+            }
+            if(array_key_exists('viet', $query) && $query['viet']) {
+                $result = $this->services->VietToLatin($query['viet']);
             }
             if(!$result || count($result) === 0) {
-                throw new Exception('Not Found');
+                return $this->respondWithData('Not Found', 404);
             } else {
-                return $this->respondWithData($result[0]);
+                return $this->respondWithData($result);
             }
         } catch(Exception $err) {
             throw new HttpNotFoundException($this->request, $err->getMessage());

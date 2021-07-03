@@ -12,7 +12,7 @@ class CategogyRepository {
     }
 
     public function fetchCategory() {
-        $sql = "SELECT id, name_vn from vncreatu_vncreature_new.posts_category";
+        $sql = "SELECT id, name_vn from hi1xyz1b_vncreatures.posts_category";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $category = $db->fetchAll();

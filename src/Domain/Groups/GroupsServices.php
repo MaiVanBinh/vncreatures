@@ -27,63 +27,35 @@ class GroupsServices
     /**
      * @return array Groups The name of Groups list
      */
-    public function fetchGroup($entires = null, $page = 1, $isFilter = false, $filter = null)
+    public function fetchGroup($entires = null, $page = 1, $isFilter = false, $name = '', $species = null)
     {
+        $sql = "select id, name_vn, name_latin, species, created_at FROM vncreatu_vncreatures.group order by name_vn asc;";
         if ($isFilter) {
-            $sql = "select id, name_vn, species FROM vncreatu_vncreature_new.group order by name_vn asc;";
+            $sql = "select id, name_vn, name_latin, species FROM vncreatu_vncreatures.group order by name_vn asc;";
             $db = $this->connection->prepare($sql);
             $db->execute();
             $groups = $db->fetchAll();
             return $groups;
         }
-        // $sql = "SELECT 
-        //     g.*, 
-        //     u1.username as created_by_name, 
-        //     u2.username as updated_by_name, 
-        //     s.name_vn, s.name_vn as species_name 
-        // FROM vncreatu_vncreature_new.group g, 
-        //     users u1, 
-        //     users u2, 
-        //     species s 
-        // where g.created_by = u1.username 
-        //     and g.id=1
-        //     and g.updated_by = u2.username 
-        //     and s.id = g.species 
-        // order by g.name_vn asc;";
-        $sqlCount = "select count(id) as total FROM vncreatu_vncreature_new.group;";
-        $db = $this->connection->prepare($sqlCount);
-        $db->execute();
-        $total = $db->fetchAll();
-        if ($entires) {
-            $offset = ($page - 1) * $entires;
-            $sql = "SELECT g.*, 
-                u1.username as created_by_name, 
-                u2.username as updated_by_name, 
-                s.name_vn as species_name 
-            FROM vncreatu_vncreature_new.group g, 
-                users u1, 
-                users u2, 
-                species s 
-            where 
-                g.created_by = u1.id 
-                and g.updated_by = u2.id 
-                and s.id = g.species";
-            if($filter && $filter['value']) {
-                if($filter['name'] === 'species') {
-                    $sql .= " and s.name_vn like '%{$filter['value']}%'";
-                } else if($filter['name'] === 'id') {
-                    $sql .= " and g.id={$filter['value']}";
-                } else if($filter['name'] === 'created_by') {
-                    $sql .= " and u1.username like '%{$filter['value']}%'";
-                } else if($filter['name'] === 'updated_by') {
-                    $sql .= " and u2.username like '%{$filter['value']}%'";
-                } else {
-                    $sql .= " and g.{$filter['name']} like '%{$filter['value']}%'";
-                }
-            }
-            $sql .= " order by g.name_vn asc limit {$entires} offset {$offset};";
-        }
+        
+        $sql = "select g.*, s.name_vn as speciesVn from vncreatu_vncreatures.group g, species s where s.id=g.species and g.name_vn like :nameString";
+        $sqlCount = "select count(id) as total from vncreatu_vncreatures.group where name_vn like :nameString";
         $db = $this->connection->prepare($sql);
+        $dbCount = $this->connection->prepare($sqlCount);
+        
+        if($species) {
+            $sql = "select g.*, s.name_vn as speciesVn from vncreatu_vncreatures.group g, species s where s.id=g.species and g.name_vn like :nameString and g.species=:species";
+            $sqlCount = "select count(id) as total from vncreatu_vncreatures.group where name_vn like :nameString and species=:species";
+            $db = $this->connection->prepare($sql);
+            $dbCount = $this->connection->prepare($sqlCount);
+            $db->bindParam(':species', $species, PDO::PARAM_INT);
+            $dbCount->bindParam(':species', $species, PDO::PARAM_INT);
+        }
+        $nameString = '%' . $name . '%';
+        $db->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        $dbCount->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        $dbCount->execute();
+        $total =  $dbCount->fetchAll();
         $db->execute();
         $Groups = $db->fetchAll();
         return ['total' => $total[0]['total'], 'groups' => $Groups];
@@ -95,7 +67,7 @@ class GroupsServices
      */
     public function countBySpecies($speciesId)
     {
-        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreature_new.group where species={$speciesId}";
+        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreatures.group where species={$speciesId}";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $result = $db->fetchAll();
@@ -106,7 +78,7 @@ class GroupsServices
     public function create($name_vn, $name_latin, $species, $userId)
     {
         try {
-            $sql = "INSERT INTO vncreatu_vncreature_new.group (name_vn, name_latin, species, created_by, updated_by) values ('{$name_vn}', '{$name_latin}', {$species}, {$userId}, {$userId})";
+            $sql = "INSERT INTO vncreatu_vncreatures.group (name_vn, name_latin, species, created_by, updated_by) values ('{$name_vn}', '{$name_latin}', {$species}, {$userId}, {$userId})";
 
             // return $sql;
             $this->connection->prepare($sql)->execute();
@@ -122,7 +94,7 @@ class GroupsServices
         u1.username as created_by_name, 
         u2.username as updated_by_name, 
         s.name_vn as species_name 
-    FROM vncreatu_vncreature_new.group g, 
+    FROM vncreatu_vncreatures.group g, 
         users u1, 
         users u2, 
         species s 
@@ -140,7 +112,7 @@ class GroupsServices
     public function delete($id)
     {
         try {
-            $sql = "DELETE FROM vncreatu_vncreature_new.group WHERE id={$id}";
+            $sql = "DELETE FROM vncreatu_vncreatures.group WHERE id={$id}";
             $db = $this->connection->prepare($sql);
             $db->execute();
             // return $sql;
@@ -153,7 +125,7 @@ class GroupsServices
     {
         try {
             $date = date('Y-m-d H:i:s');
-            $sql = "UPDATE vncreatu_vncreature_new.group 
+            $sql = "UPDATE vncreatu_vncreatures.group 
                     SET 
                         name_vn='{$name_vn}', 
                         name_latin='{$name_latin}',
@@ -167,5 +139,14 @@ class GroupsServices
         } catch (Exception $ex) {
             throw $ex;
         }
+    }
+
+    public function countGroups() {
+        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreatures.group;";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $result = $db->fetchAll();
+        $total = $result[0]['total'];
+        return $total;
     }
 }

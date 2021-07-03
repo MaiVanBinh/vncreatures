@@ -15,10 +15,14 @@ class DeleteAsset extends AssetsAction
         try {
             $token = $this->request->getAttribute('token');
             $id =$this->resolveArg('id');
-            $this->assetsServices->unLink($id);
-            $this->assetsServices->deleteAsset($id);
-            return $this->respondWithData('Delete Success', 200);
-            
+            $image = $this->assetsServices->fetchAssetById($id);
+            $directory = __DIR__ . '/../../../../assets/images/';
+            if(count($image) > 0 && $image[0]['in_use'] == '0') {
+                unlink($directory . $image[0]['name']);
+                $this->assetsServices->deleteAsset($id);
+                return $this->respondWithData('Delete Success', 200);
+            }
+            return $this->respondWithData('Delete Not Success', 400);
         } catch (Exception $ex) {
             return $this->respondWithData($ex->getMessage(), 200);
         }

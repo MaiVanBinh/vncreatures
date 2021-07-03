@@ -26,7 +26,7 @@ class SpeciesService
     {
         try {
             if ($isFilter) {
-                $sql = 'SELECT id, name_vn FROM species';
+                $sql = 'SELECT id, name_vn, name_en FROM species';
                 $db = $this->connection->prepare($sql);
                 $db->execute();
                 $species = $db->fetchAll();

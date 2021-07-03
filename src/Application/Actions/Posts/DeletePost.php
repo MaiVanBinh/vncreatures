@@ -2,8 +2,6 @@
 
 namespace App\Application\Actions\Posts;
 use App\Application\Actions\Posts\PostsActions;
-use Respect\Validation\Validator as v;
-use App\Requests\CustomRequestHandler;
 use Exception;
 use Slim\Exception\HttpInternalServerErrorException;
 
@@ -21,11 +19,20 @@ class DeletePost extends PostsActions {
                 if(!$id)
                 {
                     $responseMessage = $this->validator->errors;
-                    return $this->respondWithData($responseMessage, 404);
+                    return $this->respondWithData($responseMessage, 400);
                 }
-                $this->assetsServices->unLinkAssetPost($id);
+                $imagesOfPost = $this->assetsServices->fetchAssetByPostId($id);
+                $this->assetsServices->unLinkImagePost($id);
+                for($i=0; $i < count($imagesOfPost); $i++) {
+                    
+                    // check for another post use image.
+                    $isImageUse = $this->assetsServices->checkAssetInUse($imagesOfPost[$i]['id']);
+                    if(!$isImageUse) {
+                        $this->assetsServices->useImage($imagesOfPost[$i]['id'], false);
+                    } 
+                }
                 $this->postsServices->deletePost($id);
-                return $this->respondWithData("Delete Success");
+                return $this->respondWithData("Delete success", 200);
             } else {
                 return $this->respondWithData('Unauthorzied', 401);
             }

@@ -14,10 +14,10 @@ class AuthorServices {
     public function fetchAuthors($page, $isAll) {
         $sql = '';
         if($isAll) {
-            $sql = "SELECT id, name FROM vncreatu_vncreature_new.author";
+            $sql = "SELECT id, name FROM author";
         } else {
             $offset = intval($page - 1) * 10;
-            $sql = "SELECT id, name FROM vncreatu_vncreature_new.author LIMIT 12 OFFSET  {$offset};";
+            $sql = "SELECT id, name FROM author LIMIT 12 OFFSET  {$offset};";
         }
         $db = $this->connection->prepare($sql);
         $db->execute();

@@ -15,35 +15,47 @@ class OrdersServices {
     /**
      * @param int id La id cua Nhom, Neu khong co se fetch tat ca
      */
-    public function fetchOrder($entires = null, $page = 1, $isFilter = false, $name_vn = null) {
+    public function fetchOrder($limit = 10, $page = 1, $isFilter = false, $name = '', $group = null) {
         if($isFilter) {
-            $sql = "SELECT id, name_vn, orders.group FROM vncreatu_vncreature_new.orders order by name_vn asc";
+            $sql = "SELECT id, name_vn, name_latin, orders.group  FROM vncreatu_vncreatures.orders order by name_vn asc";
             $db = $this->connection->prepare($sql);
             $db->execute();
             $order = $db->fetchAll();
             return $order;
         }
-        $sql = "SELECT * FROM vncreatu_vncreature_new.orders order by name_vn asc";
-        $sqlCount = "SELECT count(id) as total FROM vncreatu_vncreature_new.orders";
-        if($entires) {
-            $offset = ($page - 1) * $entires;
-            $sql = "SELECT * FROM vncreatu_vncreature_new.orders order by name_vn asc limit {$entires} offset {$offset};";
-            if($name_vn) {
-                $sql = "SELECT * FROM vncreatu_vncreature_new.orders where name_vn like '%{$name_vn}%' order by name_vn asc limit {$entires} offset {$offset};";
-                $sqlCount = "SELECT count(id) as total FROM vncreatu_vncreature_new.orders where name_vn like '%{$name_vn}%';";
-            }
-        }
-        $db = $this->connection->prepare($sqlCount);
-        $db->execute();
-        $total = $db->fetchAll();
+        $sql = "select o.*, g.name_vn as groupVn from vncreatu_vncreatures.orders o, vncreatu_vncreatures.group g where g.id=o.group and o.name_vn like :nameString limit :limit offset :offset";
+        $sqlCount = "select count(id) as total from vncreatu_vncreatures.orders where name_vn like :nameString";
+        
         $db = $this->connection->prepare($sql);
+        $dbCount = $this->connection->prepare($sqlCount);
+        
+        if($group) {
+            $sql = "select o.*, g.name_vn as groupVn from vncreatu_vncreatures.orders o, vncreatu_vncreatures.group g where g.id=o.group and o.name_vn like :nameString and o.group=:group limit :limit offset :offset";
+            $sqlCount = "select count(id) as total from vncreatu_vncreatures.orders where name_vn like :nameString and orders.group=:group";
+            $db = $this->connection->prepare($sql);
+            $dbCount = $this->connection->prepare($sqlCount);
+        
+            $db->bindParam(':group', $group, PDO::PARAM_INT);
+            $dbCount->bindParam(':group', $group, PDO::PARAM_INT);
+            
+        }
+        $offset = ($page-1) * $limit;
+        $nameString = '%' . $name . '%';
+        $db->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        $db->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $db->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $dbCount->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        
+        $dbCount->execute();
+        $total =  $dbCount->fetchAll();
+        
         $db->execute();
         $order = $db->fetchAll();
         return ['total' => $total[0]['total'], 'orders' => $order];
     }
 
     public function countByGroup($groupId) {
-        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreature_new.orders where orders.group={$groupId}";
+        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreatures.orders where orders.group={$groupId}";
         $db = $this->connection->prepare($sql);
         $db->execute();
         $result = $db->fetchAll();
@@ -53,7 +65,7 @@ class OrdersServices {
 
     public function create($name_vn, $name_latin, $group, $userId) {
         try {
-            $sql = "INSERT INTO vncreatu_vncreature_new.orders (name_vn, name_latin, orders.group, created_by, updated_by) values (:name_vn, :name_latin, :group, :userId, :userId)";
+            $sql = "INSERT INTO vncreatu_vncreatures.orders (name_vn, name_latin, orders.group, created_by, updated_by) values (:name_vn, :name_latin, :group, :userId, :userId)";
             $db = $this->connection->prepare($sql);
             $db->bindParam(':name_vn', $name_vn, PDO::PARAM_STR);
             $db->bindParam(':name_latin', $name_latin, PDO::PARAM_STR);
@@ -70,7 +82,7 @@ class OrdersServices {
     public function delete($id)
     {
         try {
-            $sql = "DELETE FROM vncreatu_vncreature_new.orders WHERE id=:id";
+            $sql = "DELETE FROM vncreatu_vncreatures.orders WHERE id=:id";
             $db = $this->connection->prepare($sql);
             $db->bindParam(':id', $id, PDO::PARAM_INT);
             $db->execute();
@@ -82,7 +94,7 @@ class OrdersServices {
 
     public function fetchOrderById($id) {
         try {
-            $sql = "SELECT * from vncreatu_vncreature_new.orders where id=:id";
+            $sql = "SELECT * from vncreatu_vncreatures.orders where id=:id";
             $db = $this->connection->prepare($sql);
             $db->bindParam(':id', $id, PDO::PARAM_INT);
             $db->execute();
@@ -96,7 +108,7 @@ class OrdersServices {
     public function update($id, $name_vn, $name_latin, $group, $userId) {
         try {
             $dateNow = date('Y-m-d H:i:s');
-            $sql = "UPDATE vncreatu_vncreature_new.orders 
+            $sql = "UPDATE vncreatu_vncreatures.orders 
                     SET 
                         name_vn=:name_vn, 
                         name_latin=:name_latin,
@@ -116,5 +128,14 @@ class OrdersServices {
         } catch (Exception $ex) {
             throw $ex;
         }
+    }
+    
+    public function countOrders() {
+        $sql = "SELECT COUNT(id) AS total FROM vncreatu_vncreatures.orders;";
+        $db = $this->connection->prepare($sql);
+        $db->execute();
+        $result = $db->fetchAll();
+        $total = $result[0]['total'];
+        return $total;
     }
 }

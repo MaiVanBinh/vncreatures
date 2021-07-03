@@ -12,8 +12,8 @@ return function (ContainerBuilder $containerBuilder) {
             'db' => [
                 'driver' => 'mysql',
                 'host' => 'localhost',
-                'username' => 'root',
-                'database' => 'vncreatu_vncreature_new',
+                'username' => 'admin',
+                'database' => 'vncreatu_vncreatures',
                 'password' => '',
                 'charset' => 'utf8',
                 'collation' => 'utf8_unicode_ci',

@@ -21,7 +21,7 @@ class User
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
-    static public function generateToken($email, $id)
+    static public function generateToken($id)
     {
         $now = time();
         $future = strtotime('+1 hour', $now);
@@ -29,7 +29,6 @@ class User
 
         $payload = [
             "id" => $id,
-            "email" => $email,
             "iat" => $now,
             "exp" => $future
         ];
