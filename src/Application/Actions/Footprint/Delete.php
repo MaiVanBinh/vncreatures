@@ -17,7 +17,13 @@ class Delete extends FootprintAction {
             }
             if($isUserExist) {
                 $id =$this->resolveArg('id');
+                $footprint = $this->footprintServices->fetchFootprintById($id);
+                if (count($footprint) === 0) {
+                    return $this->respondWithData("Footprint not found", 400);
+                }
+                $avatar = $footprint[0]['avatar'];
                 $this->footprintServices->delete($id);
+                $this->unLinkImage($avatar);
                 return $this->respondWithData('Delete Success', 200);
             } else {
                 return $this->respondWithData('Unauthorzied', 401);

@@ -22,14 +22,9 @@ class DeletePost extends PostsActions {
                     return $this->respondWithData($responseMessage, 400);
                 }
                 $imagesOfPost = $this->assetsServices->fetchAssetByPostId($id);
-                $this->assetsServices->unLinkImagePost($id);
                 for($i=0; $i < count($imagesOfPost); $i++) {
+                    $this->unLinkImageWithPost($imagesOfPost[$i]['id'], $id);
                     
-                    // check for another post use image.
-                    $isImageUse = $this->assetsServices->checkAssetInUse($imagesOfPost[$i]['id']);
-                    if(!$isImageUse) {
-                        $this->assetsServices->useImage($imagesOfPost[$i]['id'], false);
-                    } 
                 }
                 $this->postsServices->deletePost($id);
                 return $this->respondWithData("Delete success", 200);

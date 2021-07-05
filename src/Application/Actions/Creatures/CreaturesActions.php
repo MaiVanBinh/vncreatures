@@ -51,6 +51,7 @@ abstract class CreaturesActions extends Actions
     }
 
 
+
     public function checkImageExistById($id)
     {
         $images = $this->assetsServices->fetchAssetById($id);
@@ -60,21 +61,13 @@ abstract class CreaturesActions extends Actions
         return false;
     }
 
-    public function categoryExist($id)
+    public function unLinkImageWithCreatures($imageId, $creatureID)
     {
-        $category = $this->categoryServices->fetchCategoryById($id);
-        if ($category) {
-            return true;
-        }
-        return false;
-    }
-
-    public function unLinkImageWithPost($imageId, $postId)
-    {
-        $this->assetsServices->unlinkBaseOnImageAndPost($imageId, $postId);
+        $this->assetsServices->unLinkByCreturesAndAsset($imageId, $creatureID);
         $isImageUse = $this->assetsServices->checkAssetInUse($imageId);
         if (!$isImageUse) {
             $this->assetsServices->useImage($imageId, false);
         }
+        return $isImageUse;
     }
 }

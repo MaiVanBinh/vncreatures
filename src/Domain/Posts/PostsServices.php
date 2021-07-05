@@ -364,15 +364,17 @@ class PostsServices
         $db->execute();
     }
 
-    public function createPost($title, $category, $description, $content, $userId, $is_publish)
+    public function createPost($title, $category, $description, $content, $userId, $is_publish, $language)
     {
         $sql = "INSERT 
-            posts (title, category, description, content, created_by, updated_by, is_publish) 
-        values (:title, :category, :description, :content, :userId, :userId, :is_publish);";
+            posts (title, category, description, content, created_by, updated_by, is_publish, language ) 
+        values (:title, :category, :description, :content, :userId, :userId, :is_publish, :language);";
         $db = $this->connection->prepare($sql);
         $db->bindParam(':title', $title, PDO::PARAM_STR);
         $db->bindParam(':category', $category, PDO::PARAM_INT);
         $db->bindParam(':description', $description, PDO::PARAM_STR);
+        $db->bindParam(':language', $language, PDO::PARAM_STR);
+
         $db->bindParam(':content', $content, PDO::PARAM_STR);
         $db->bindParam(':userId', $userId, PDO::PARAM_INT);
         $db->bindParam(':userId', $userId, PDO::PARAM_INT);

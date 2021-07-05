@@ -23,10 +23,19 @@ class FootprintServices
         $this->connection = $connection;
     }
 
+    public function fetchFootprintById($id) {
+        $sql = 'Select * from footprint where id =:id';
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':id',$id, PDO::PARAM_INT);
+        $db->execute();
+        $footprint = $db->fetchAll();
+        return $footprint;
+    }
+
     public function fetchFootprint($limit = 10, $page = 1, $name="") {
         $offset = ($page-1)*$limit;
         $nameString = '%' . $name . '%';
-        $sql = "SELECT f.*, f.avatar as avatarId, a.url as avatar from footprint f, assets a where f.avatar=a.id and f.name_vn like :nameString limit :limit offset :offset";
+        $sql = "SELECT f.*, f.avatar as avatarId, a.url as avatar from footprint f, assets a where f.avatar=a.id and f.name_vn like :nameString order by created_at desc limit :limit offset :offset";
         $sqlCount = "SELECT count(id) as total from footprint where name_vn like :nameString;";
         $db = $this->connection->prepare($sql);
         $dbCount = $this->connection->prepare($sqlCount);

@@ -99,6 +99,15 @@ class AssetsServices
     //     return $assets[0];
     // }
 
+    public function unLinkByCreturesAndAsset($assetId, $creatureId)
+    {
+        $sql = "DELETE FROM assets_creatures where creature=:creatureId and asset=:assetId";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':creatureId', $creatureId, PDO::PARAM_INT);
+        $db->bindParam(':assetId', $assetId, PDO::PARAM_INT);
+        $db->execute();
+    }
+
     public function unLinkAssetCretures($creatureId)
     {
         $sql = "DELETE FROM assets_creatures where creature=:creatureId";
@@ -158,16 +167,42 @@ class AssetsServices
     }
 
     public function checkAssetInUse($imageId) {
-        $sql = "SELECT * FROM assets_posts WHERE asset=:imageId;";
+        $in_use = false;
+        $sql = "SELECT asset FROM assets_posts WHERE asset=:imageId;";
         $db = $this->connection->prepare($sql);
         $db->bindParam(':imageId', $imageId, PDO::PARAM_INT);
         $db->execute();
         $images = $db->fetchAll();
         if(count($images) > 0) {
-            return true;
+            $in_use = true;
         }
-        return false;
+        $sql = "SELECT asset FROM assets_creatures WHERE asset=:imageId;";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':imageId', $imageId, PDO::PARAM_INT);
+        $db->execute();
+        $images = $db->fetchAll();
+        if(count($images) > 0) {
+            $in_use =  true;
+        }
+        $sql = "SELECT avatar FROM footprint WHERE avatar=:imageId;";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':imageId', $imageId, PDO::PARAM_INT);
+        $db->execute();
+        $images = $db->fetchAll();
+        if(count($images) > 0) {
+            $in_use =  true;
+        }
+        $sql = "SELECT img FROM wood_form WHERE img=:imageId;";
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':imageId', $imageId, PDO::PARAM_INT);
+        $db->execute();
+        $images = $db->fetchAll();
+        if(count($images) > 0) {
+            $in_use =  true;
+        }
+        return $in_use;
     }
+
     public function unlinkBaseOnImageAndPost($image, $post) {
         $sql = "DELETE FROM assets_posts where asset=:asset and post=:post";
         $db = $this->connection->prepare($sql);

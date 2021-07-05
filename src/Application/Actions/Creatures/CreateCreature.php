@@ -60,40 +60,10 @@ class CreateCreature extends CreaturesActions
                     return $this->respondWithData("Image: {$images[$i]} is not exits", 400);
                 }
                 $this->acServices->createNewOne($images[$i], (int)$id);
+                $this->assetsServices->useImage($images[$i], true);
+
             }
             return $this->respondWithData($id);
-            // //upload file
-            // $directory = __DIR__ . '/../../../../assets/images';
-
-            // // Get all file upload
-            // $uploadedFiles = $this->request->getUploadedFiles();
-
-            // $numberImage = (int)$creature['numberImage'];
-
-            // for ($i = 0; $i < $numberImage; $i++) {
-            //     $uploadedFile = $uploadedFiles["image{$i}"];
-            //     $filename = null;
-            //     if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            //         $filename = $this->moveUploadedFile($directory, $uploadedFile);
-            //         $uri = $this->request->getUri();
-            //         $imageUrl = $uri->getScheme() . '://' . $uri->getHost();
-            //         if ($uri->getHost() === 'localhost') {
-            //             $imageUrl .= ':' . $uri->getPort();
-            //         }
-            //         $imageUrl .= "/assets/" . $filename;
-            //         $idAsset = $this->assetsServices->createAsset($imageUrl, $filename);
-            //         $this->acServices->createNewOne($idAsset, (int)$id);
-            //     }
-            //     if (!$filename) {
-            //         throw new Exception('Upload image error');
-            //     }
-            // }
-
-
-            // // $creatures = $this->creaturesServices->fetchCreatureById($creatureId);
-            // // $images = $this->assetsServices->fetchCreatureImage($creatureId);
-            // // $creatures['images'] = $images;
-            // return $this->respondWithData($id, 200);
         } catch (Exception $ex) {
             return $this->respondWithData($ex->getMessage(), 400);
         }

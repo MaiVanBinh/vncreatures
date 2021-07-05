@@ -3,6 +3,7 @@
 namespace App\Domain\Creatures;
 use PDO;
 use Exception;
+use PhpParser\Node\Stmt\Return_;
 
 class CreaturesServices {
     private $connection;
@@ -94,7 +95,7 @@ class CreaturesServices {
         }
         $offset = array_key_exists('page', $filter) ? (intval($filter['page']) - 1) * 9 : 0;
         $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 10;
-        array_push($sqlSelectPath, "order by creatures.name_vn asc LIMIT {$limit}  OFFSET {$offset}");
+        array_push($sqlSelectPath, "order by creatures.created_at desc LIMIT {$limit}  OFFSET {$offset}");
         array_push($sqlSelectPath, ") c, vncreatu_vncreatures.group g, families f, vncreatu_vncreatures.orders o, species as s, author as a where c.group = g.id and c.family = f.id and c.order = o.id and c.species = s.id and c.author = a.id;");
 
         $sql = join(' ', $sqlCountPath);
@@ -108,6 +109,16 @@ class CreaturesServices {
         $creatures = $db->fetchAll();
         return ['total' => $total[0]['total'], 'creatures' => $creatures, 'name' => $name];
         return ['sql' => $sql];
+    }
+
+    public function getCreaturesName($keyword){
+        $sql = 'SELECT id, name_vn, name_latin from creatures where name_vn like :nameString or name_latin like :nameString;';
+        $nameString = '%' . $keyword . '%';
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':nameString', $nameString, PDO::PARAM_STR);
+        $db->execute();
+        $result = $db->fetchAll();
+        return ['creature' => $result];
     }
 
     /**

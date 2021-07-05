@@ -30,7 +30,6 @@ class AssetsCreaturesServices {
             $db = $this->connection->prepare($sql);
             $db->execute();
         } catch(Exception $ex) {
-            throw $ex;
         }
     }
 }

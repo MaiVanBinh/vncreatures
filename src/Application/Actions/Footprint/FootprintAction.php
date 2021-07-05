@@ -7,17 +7,19 @@ use App\Domain\Footprint\FootprintServices;
 use App\Domain\User\UserServices;
 use Exception;
 use App\Application\Actions\Validator;
-
+use App\Domain\Assets\AssetsServices;
 abstract class FootprintAction extends Actions {
     protected $footprintServices;
     protected $userServices;
     protected $validator;
-    
-    public function __construct(FootprintServices $footprintServices, LoggerInterface $logger, UserServices $userServices, Validator $validator) {
+    protected $assetsServices;
+
+    public function __construct(AssetsServices $assetsServices, FootprintServices $footprintServices, LoggerInterface $logger, UserServices $userServices, Validator $validator) {
         parent::__construct($logger);
         $this->footprintServices = $footprintServices;
         $this->userServices = $userServices;
         $this->validator = $validator;
+        $this->assetsServices = $assetsServices;
     }
 
     public function checkUserExist($id) {
@@ -31,5 +33,13 @@ abstract class FootprintAction extends Actions {
         } catch(Exception $ex) {
             throw $ex->getMessage();
         }
+    }
+    public function unLinkImage($imageId)
+    {
+        $isImageUse = $this->assetsServices->checkAssetInUse($imageId);
+        if (!$isImageUse) {
+            $this->assetsServices->useImage($imageId, false);
+        }
+        return $isImageUse;
     }
 }

@@ -57,6 +57,7 @@ class UpdatePost extends PostsActions
                 }
 
                 $imagesRemove = CustomRequestHandler::getParam($this->request, "imagesRemove");
+
                 if(is_array($imagesRemove)) {
                     for($i = 0; $i < count($imagesRemove); $i++) {
                         $isImageExist = (int)$this->checkImageExistById($imagesRemove[$i]);
@@ -69,12 +70,7 @@ class UpdatePost extends PostsActions
 
                 // update new Post
                 $this->postsServices->updatePost($id, $title, $category, $description, $content, $is_publish, $token['id'], $language);
-                
-                // link image with post
-                // for($i = 0; $i < count($imagesExists); $i++) {
-                //     $this->PIServices->linkPostWithImage($newId, $imagesExists[$i], $token['id']);
-                //     $this->assetsServices->useImage($imagesExists[$i], true);
-                // }
+  
                 $newPost = $this->postsServices->fetchPostById($id);
                 return $this->respondWithData($newPost);
             } 

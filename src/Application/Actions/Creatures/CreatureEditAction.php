@@ -49,14 +49,16 @@ class CreatureEditAction extends CreaturesActions
             // unlink all currentimage
             $oldImages = $this->assetsServices->fetchCreatureImage($id);
             $len = count($oldImages);
-            if($len > 0) {
-                for($i=0; $i < $len; $i++) {
-                    $this->assetsServices->unLinkAssetCretures($id);  
+
+            if ($len > 0) {
+                for ($i = 0; $i < $len; $i++) {
+                    $this->unLinkImageWithCreatures($oldImages[$i]['id'], $id);
+
                 }
-            } 
+            }
             $creature['avatar'] = '';
             $images = CustomRequestHandler::getParam($this->request, "images");
-            if(!is_array($images)) {
+            if (!is_array($images)) {
                 return $this->respondWithData('List image invalid');
             }
             if (count($images) > 0) {
@@ -64,7 +66,7 @@ class CreatureEditAction extends CreaturesActions
                 if ($isImageExist == false) {
                     return $this->respondWithData("Image: {$creature['avatar']} is not exits", 400);
                 }
-                $creature['avatar'] = $isImageExist;    
+                $creature['avatar'] = $isImageExist;
             }
 
             for ($i = 0; $i < count($images); $i++) {
@@ -73,6 +75,7 @@ class CreatureEditAction extends CreaturesActions
                     return $this->respondWithData("Image: {$images[$i]} is not exits", 400);
                 }
                 $this->acServices->createNewOne($images[$i], (int)$id);
+                $this->assetsServices->useImage($images[$i], true);
             }
             $creature['id'] = $id;
             $this->creaturesServices->editCreatureById($creature, $token['id']);

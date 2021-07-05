@@ -18,7 +18,14 @@ class DeleteCreature extends CreaturesActions
                 };
             }
             $creatureId = $this->resolveArg('id');
-            $this->assetsServices->unLinkAssetCretures($creatureId);
+            $oldImages = $this->assetsServices->fetchCreatureImage($creatureId);
+            $len = count($oldImages);
+
+            if ($len > 0) {
+                for ($i = 0; $i < $len; $i++) {
+                    $this->unLinkImageWithCreatures($oldImages[$i]['id'], $creatureId);
+                }
+            }
             $this->creaturesServices->deleteCreature($creatureId);
             return $this->respondWithData('Delete success', 200);
         } catch (Exception $ex) {

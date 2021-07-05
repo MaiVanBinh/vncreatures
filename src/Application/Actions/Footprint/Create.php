@@ -31,8 +31,9 @@ class Create extends FootprintAction {
                 $name_latin = CustomRequestHandler::getParam($this->request, "name_latin");
                 $name_en = CustomRequestHandler::getParam($this->request, "name_en");
                 $avatar = CustomRequestHandler::getParam($this->request, "avatar");
-                $creature = intval(CustomRequestHandler::getParam($this->request, "creature"));
+                $creature = intval(CustomRequestHandler::getParam($this->request, "id"));
                 $this->footprintServices->createFootprint($name_vn, $name_latin, $name_en, $avatar, $creature, $token['id']);
+                $this->assetsServices->useImage($avatar, true);
                 return $this->respondWithData($name_vn);
             } else {
                 return $this->respondWithData('Unauthorzied', 401);

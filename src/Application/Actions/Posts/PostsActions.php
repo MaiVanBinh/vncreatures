@@ -46,14 +46,14 @@ abstract class PostsActions extends Actions
         }
     }
 
-    public function checkImageExistByUrl($url)
-    {
-        $images = $this->assetsServices->findImageByUrl($url);
-        if (count($images) > 0) {
-            return $images[0]['id'];
-        }
-        return false;
-    }
+    // public function checkImageExistByUrl($url)
+    // {
+    //     $images = $this->assetsServices->findImageByUrl($url);
+    //     if (count($images) > 0) {
+    //         return $images[0]['id'];
+    //     }
+    //     return false;
+    // }
 
 
     public function checkImageExistById($id)

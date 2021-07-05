@@ -13,8 +13,13 @@ class CreaturesListByFilterAction extends CreaturesActions
     {
         try {
             $filter = $this->request->getQueryParams();
+            if(array_key_exists('all', $filter)) {
+                $keyword = array_key_exists('keyword', $filter) ? $filter['keyword'] : '';
+                $creatures = $this->creaturesServices->getCreaturesName($keyword);
+                return $this->respondWithData($creatures);
+            }
+
             $creatures = $this->creaturesServices->getCreaturesByFilter($filter);
-            $query = $this->request->getQueryParams();
             $limit = array_key_exists('limit', $filter) ? intval($filter['limit']) : 10;
             $page = array_key_exists('page', $filter) ? intval($filter['page']) : null;
             $total = $creatures['total'];
