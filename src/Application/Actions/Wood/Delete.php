@@ -18,7 +18,13 @@ class Delete extends WoodAction {
             }
             if($isUserExist) {
                 $id =$this->resolveArg('id');
+                $wood = $this->woodServices->fetchWoodprintById($id);
+                if (count($wood) === 0) {
+                    return $this->respondWithData("Wood not found", 400);
+                }
+                $img = $wood[0]['img'];
                 $this->woodServices->delete($id);
+                $this->unLinkImage($img);
                 return $this->respondWithData('Delete Success', 200);
             } else {
                 return $this->respondWithData('Unauthorzied', 401);

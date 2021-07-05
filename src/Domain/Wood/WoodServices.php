@@ -11,10 +11,19 @@ class WoodServices {
         $this->connection = $connection;
     }
     
+    public function fetchWoodprintById($id) {
+        $sql = 'Select * from wood_form where id =:id';
+        $db = $this->connection->prepare($sql);
+        $db->bindParam(':id',$id, PDO::PARAM_INT);
+        $db->execute();
+        $footprint = $db->fetchAll();
+        return $footprint;
+    }
+
     public function fetchWoodForm($limit = 40, $page = 1, $name="") {
         $offset = ($page-1)*$limit;
         $nameString = '%' . $name . '%';
-        $sql = "SELECT f.*, f.img as avatarId, a.url as avatar from wood_form f, assets a where f.img=a.id and f.name_vn like :nameString limit :limit offset :offset";
+        $sql = "SELECT f.*, f.img as imgId, a.url as img from wood_form f, assets a where f.img=a.id and f.name_vn like :nameString order by f.created_at desc limit :limit offset :offset";
         $sqlCount = "SELECT count(id) as total from wood_form where name_vn like :nameString;";
         $db = $this->connection->prepare($sql);
         $dbCount = $this->connection->prepare($sqlCount);

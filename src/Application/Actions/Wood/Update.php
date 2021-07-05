@@ -23,6 +23,12 @@ class Update extends WoodAction {
                     "img"=>v::digit()
                 ]);
                 $id =$this->resolveArg('id');
+                $wood = $this->woodServices->fetchWoodprintById($id);
+                if (count($wood) === 0) {
+                    return $this->respondWithData("Wood not found", 400);
+                }
+                $avatar = $wood[0]['img'];
+                $avatarNew = CustomRequestHandler::getParam($this->request, "img");
                 if($this->validator->failed())
                 {
                     $responseMessage = $this->validator->errors;
@@ -31,10 +37,12 @@ class Update extends WoodAction {
                 $name_vn = CustomRequestHandler::getParam($this->request, "name_vn");
                 $name_latin = CustomRequestHandler::getParam($this->request, "name_latin");
                 $name_en = CustomRequestHandler::getParam($this->request, "name_en");
-                $avatar = CustomRequestHandler::getParam($this->request, "img");
-                $creature = intval(CustomRequestHandler::getParam($this->request, "creature"));
-                $this->woodServices->update($id, $name_vn, $name_latin, $name_en, $avatar, $creature, $token['id']);
-                return $this->respondWithData($name_vn);
+                $this->woodServices->update($id, $name_vn, $name_latin, $name_en, $avatarNew, $id, $token['id']);
+                if ($avatar != $avatarNew) {
+                    $this->unLinkImage($avatar);
+                    $this->assetsServices->useImage($avatarNew, true);
+                }
+                return $this->respondWithData([$avatar, $avatarNew]);
             } else {
                 return $this->respondWithData('Unauthorzied', 401);
             }

@@ -25,14 +25,17 @@ class Create extends WoodAction {
                 if($this->validator->failed())
                 {
                     $responseMessage = $this->validator->errors;
-                        return $this->respondWithData($responseMessage, 404);
+                    return $this->respondWithData($responseMessage, 404);
                 }
                 $name_vn = CustomRequestHandler::getParam($this->request, "name_vn");
+
                 $name_latin = CustomRequestHandler::getParam($this->request, "name_latin");
                 $name_en = CustomRequestHandler::getParam($this->request, "name_en");
                 $img = CustomRequestHandler::getParam($this->request, "img");
-                $creature = intval(CustomRequestHandler::getParam($this->request, "creature"));
-                $this->woodServices->create($name_vn, $name_latin, $name_en, $img, $creature, $token['id']);
+                $id = intval(CustomRequestHandler::getParam($this->request, "id"));
+
+                $this->assetsServices->useImage($img, true);
+                $this->woodServices->create($name_vn, $name_latin, $name_en, $img, $id, $token['id']);
                 return $this->respondWithData($name_vn);
             } else {
                 return $this->respondWithData('Unauthorzied', 401);
