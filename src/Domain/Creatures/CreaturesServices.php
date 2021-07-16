@@ -52,31 +52,18 @@ class CreaturesServices {
                 creatures.created_at,
                 creatures.created_by,
                 redbook_level FROM creatures WHERE name_vn !='vodanh'");
+
         array_push($sqlCountPath, "SELECT count(id) as total from creatures WHERE name_vn!='vodanh'");
+        
         if (array_key_exists('family', $filter) && count(json_decode($filter['family'])) > 0) {
-            // if(count(json_decode($filter['family'])) == 1) {
-            //     $families = '(' . $filter[family] . ')';
-            // } else {
-            //     $families = '(' . join(", ", json_decode($filter['family'])) . ')';
-            // }
             $families = '(' . join(", ", json_decode($filter['family'])) . ')';
             array_push($sqlSelectPath, "AND creatures.family in {$families}");
             array_push($sqlCountPath, "AND creatures.family in {$families}");
         } else if (array_key_exists('order', $filter) && count(json_decode($filter['order'])) > 0) {
-            // if(count(json_decode($filter['order'])) == 1) {
-            //     $order = '(' . $filter['order'] . ')';
-            // } else {
-            //     $order = '(' . join(", ", json_decode($filter['order'])) . ')';
-            // }
             $order = '(' . join(", ", json_decode($filter['order'])) . ')';
             array_push($sqlSelectPath, "AND creatures.order in {$order}");
             array_push($sqlCountPath, "AND creatures.order in {$order}");
         } else if (array_key_exists('group', $filter) && count(json_decode($filter['group'])) > 0) {
-            // if(count(json_decode($filter['group'])) == 1) {
-            //     $groups = '(' . $filter['group'] . ')';
-            // } else {
-            //     $groups = '(' . join(", ", json_decode($filter['group'])) . ')';
-            // }
             $groups = '(' . join(", ", json_decode($filter['group'])) . ')';
             array_push($sqlSelectPath, "AND creatures.group in {$groups}");
             array_push($sqlCountPath, "AND creatures.group in {$groups}");
@@ -107,6 +94,7 @@ class CreaturesServices {
         $db = $this->connection->prepare($sql);
         $db->execute();
         $creatures = $db->fetchAll();
+        
         return ['total' => $total[0]['total'], 'creatures' => $creatures, 'name' => $name];
         return ['sql' => $sql];
     }
